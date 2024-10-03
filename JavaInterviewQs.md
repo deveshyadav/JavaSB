@@ -192,4 +192,90 @@ String result = supplier.get(); // "Hello, World!"
 ```
 
 ### 5. **UnaryOperator<T>**
-A specialized `Function` that takes
+A specialized `Function` that takes one argument and returns a result of the same type.
+
+- **`apply(T t)`**: Applies the operation to the given argument.
+```Java
+UnaryOperator<Integer> square = x -> x * x;
+int result = square.apply(5); // 25
+```
+
+### 6. **BinaryOperator<T>**
+A specialized `BiFunction` that takes two arguments of the same type and returns a result of the same type.
+
+- **`apply(T t1, T t2)`**: Applies the operation to the given arguments.
+```Java
+BinaryOperator<Integer> sum = (a, b) -> a + b;
+int result = sum.apply(3, 4); // 7
+```
+
+### 7. **BiFunction<T, U, R>**
+Represents a function that accepts two arguments and produces a result.
+
+- **`apply(T t, U u)`**: Applies the function to the given arguments.
+```Java
+BiFunction<Integer, Integer, Integer> multiply = (a, b) -> a * b;
+int result = multiply.apply(3, 4); // 12
+```
+
+### 8. **BiConsumer<T, U>**
+Represents an operation that accepts two arguments and returns no result.
+
+- **`accept(T t, U u)`**: Performs the operation on the given arguments.
+```Java
+BiConsumer<String, Integer> printNameAndAge = (name, age) -> System.out.println(name + " is " + age + " years old");
+printNameAndAge.accept("John", 25); // "John is 25 years old"
+```
+
+### 9. **BiPredicate<T, U>**
+Represents a condition that accepts two arguments and returns a boolean result.
+
+- **`test(T t, U u)`**: Evaluates the predicate on the given arguments.
+```Java
+BiPredicate<String, String> areEqual = String::equals;
+boolean result = areEqual.test("test", "test"); // true
+```
+
+
+
+**Question 3:- Predicate vs Function**
+
+## Predicate vs Function
+
+In Java 8, `Predicate` and `Function` are two commonly used functional interfaces that serve different purposes. Below is a comparison of both:
+
+### 1. **Predicate<T>**
+- **Purpose:** Represents a boolean-valued function of one argument.
+- **Method:** 
+  - `boolean test(T t)`: Evaluates the predicate on the given argument.
+
+#### Example:
+```Java
+Predicate<String> isEmpty = String::isEmpty;
+boolean result = isEmpty.test(""); // true
+```
+
+- **Composing Predicates:**
+  - `Predicate<T> and(Predicate<? super T> other)`: Returns a composed predicate that represents a short-circuiting logical AND.
+  - `Predicate<T> or(Predicate<? super T> other)`: Returns a composed predicate that represents a short-circuiting logical OR.
+  - `Predicate<T> negate()`: Returns a predicate that represents the logical negation of this predicate.
+
+### 2. **Function<T, R>**
+- **Purpose:** Represents a function that accepts one argument and produces a result.
+- **Methods:**
+  - `R apply(T t)`: Applies this function to the given argument.
+
+#### Example:
+```Java
+Function<String, Integer> lengthFunction = String::length;
+int length = lengthFunction.apply("Hello"); // 5
+```
+
+- **Composing Functions:**
+  - `Function<T, V> andThen(Function<? super R, ? extends V> after)`: Returns a composed function that first applies this function and then applies the after function.
+  - `Function<T, V> compose(Function<? super V, ? extends T> before)`: Returns a composed function that first applies the before function and then applies this function.
+
+### Summary
+- Use **Predicate** when you want to evaluate a condition (returning a boolean).
+- Use **Function** when you want to transform or map an input to an output.
+
