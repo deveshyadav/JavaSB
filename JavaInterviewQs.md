@@ -279,3 +279,31 @@ int length = lengthFunction.apply("Hello"); // 5
 - Use **Predicate** when you want to evaluate a condition (returning a boolean).
 - Use **Function** when you want to transform or map an input to an output.
 
+
+**Question 4- Create predicate to check if number is even**
+## Create a Predicate to Check if a Number is Even
+
+In Java, you can use a `Predicate` to evaluate whether a number is even. Below is an example:
+
+### Example:
+```Java
+import java.util.function.Predicate;
+
+public class EvenNumberCheck {
+    public static void main(String[] args) {
+        Predicate<Integer> isEven = number -> number % 2 == 0;
+
+        // Test the predicate
+        System.out.println(isEven.test(4)); // true
+        System.out.println(isEven.test(7)); // false
+    }
+}
+```
+
+### Explanation:
+- **Predicate Definition:** 
+  - The `isEven` predicate takes an `Integer` as input and returns `true` if the number is even (i.e., the remainder when divided by 2 is zero).
+  
+- **Testing the Predicate:**
+  - The `test` method is used to evaluate the predicate for different numbers.
+
