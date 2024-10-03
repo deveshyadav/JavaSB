@@ -132,3 +132,64 @@ int sum = numbers.parallelStream()
 System.out.println("Sum: " + sum);
 
 ```
+
+
+**Question 2:- What are inbuilt methods of functional interfaces**
+
+Java's functional interfaces come with a variety of inbuilt methods that can be leveraged to perform common operations. These interfaces are part of the java.util.function package, which includes a set of standard functional interfaces like Predicate, Function, Consumer, Supplier, etc. Below is a list of common functional interfaces along with their inbuilt methods:
+
+Java's functional interfaces come with a variety of inbuilt methods that can be leveraged to perform common operations. These interfaces are part of the `java.util.function` package, which includes a set of standard functional interfaces like `Predicate`, `Function`, `Consumer`, `Supplier`, etc. Below is a list of common functional interfaces along with their inbuilt methods:
+
+### 1. **Predicate<T>**
+Represents a condition (boolean-valued function) of one argument.
+
+- **`test(T t)`**: Evaluates the predicate (condition) on the given argument.
+```Java
+Predicate<String> isEmpty = String::isEmpty;
+boolean result = isEmpty.test(""); // true
+```
+
+- **`and(Predicate<? super T> other)`**: Returns a composed predicate that represents a short-circuiting logical AND of this predicate and another.
+```Java
+Predicate<String> isNotEmpty = isEmpty.negate();
+```
+
+- **`or(Predicate<? super T> other)`**: Returns a composed predicate that represents a short-circuiting logical OR of this predicate and another.
+
+- **`negate()`**: Returns a predicate that represents the logical negation of this predicate.
+
+### 2. **Function<T, R>**
+Represents a function that accepts one argument and produces a result.
+
+- **`apply(T t)`**: Applies this function to the given argument.
+```Java
+Function<String, Integer> lengthFunction = String::length;
+int length = lengthFunction.apply("Hello"); // 5
+```
+
+- **`andThen(Function<? super R, ? extends V> after)`**: Returns a composed function that first applies this function and then applies the `after` function.
+
+- **`compose(Function<? super V, ? extends T> before)`**: Returns a composed function that first applies the `before` function and then applies this function.
+
+### 3. **Consumer<T>**
+Represents an operation that accepts a single argument and returns no result.
+
+- **`accept(T t)`**: Performs the operation on the given argument.
+```Java
+Consumer<String> printConsumer = System.out::println;
+printConsumer.accept("Hello"); // Prints "Hello"
+```
+
+- **`andThen(Consumer<? super T> after)`**: Returns a composed `Consumer` that performs, in sequence, this operation followed by the `after` operation.
+
+### 4. **Supplier<T>**
+Represents a supplier of results.
+
+- **`get()`**: Gets a result.
+```Java
+Supplier<String> supplier = () -> "Hello, World!";
+String result = supplier.get(); // "Hello, World!"
+```
+
+### 5. **UnaryOperator<T>**
+A specialized `Function` that takes
