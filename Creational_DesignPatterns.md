@@ -6,7 +6,7 @@ Creational Design Patterns
 4. Builder: Separates the construction of a complex object from its representation so that the same construction process can create different representations.
 5. Prototype: Creates new objects by copying an existing object, known as the prototype.
 
-''' Java
+``` Java
 /*Singleton Pattern*/
 public class Singleton {
     /*// Private static instance of the class*/
