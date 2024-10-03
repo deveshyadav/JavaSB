@@ -361,3 +361,50 @@ In Java, the base class for all exceptions is the `Throwable` class. It serves a
    - Checked exceptions (e.g., `IOException`, `SQLException`): Must be either caught or declared in the method signature using the `throws` keyword.
   
 
+
+## Question 6- HashMap Internal Working in Java
+
+A `HashMap` in Java is a part of the Java Collections Framework and implements the `Map` interface. It is used to store key-value pairs and provides efficient insertion, deletion, and retrieval operations.
+
+### Internal Structure
+
+1. **Array of Buckets**:
+   - A `HashMap` uses an array to store its entries, where each entry is a bucket that can contain multiple key-value pairs.
+   - The initial capacity of the array is specified at the time of creation, and it can dynamically grow when the number of entries exceeds a certain threshold (load factor).
+
+2. **Hash Function**:
+   - Each key is processed through a hash function to compute its hash code.
+   - The hash code is then transformed into an index that determines which bucket the key-value pair will be stored in.
+   - The default hash function is based on the `hashCode()` method of the key object.
+
+3. **Collision Handling**:
+   - When two keys hash to the same bucket index (a collision), the `HashMap` handles it using a linked list or, in Java 8 and later, a balanced tree (Red-Black tree) if the number of collisions exceeds a certain threshold (8 by default).
+   - This means that each bucket can contain multiple entries, allowing the `HashMap` to store multiple key-value pairs with different keys but the same hash code.
+
+### Key Operations
+
+1. **Insertion**:
+   - When a new key-value pair is added, the hash code of the key is computed, and the index of the bucket is determined.
+   - If the bucket is empty, the key-value pair is added directly.
+   - If the bucket already contains entries, the `HashMap` checks for existing keys. If the key exists, its value is updated; otherwise, the new entry is added to the bucket.
+
+2. **Retrieval**:
+   - To retrieve a value, the hash code of the key is calculated, and the corresponding bucket is located.
+   - The `HashMap` then iterates through the entries in that bucket to find the key and return the associated value.
+
+3. **Deletion**:
+   - Similar to retrieval, the hash code is computed, and the corresponding bucket is located.
+   - The `HashMap` searches for the key in the bucket and removes the key-value pair if found.
+
+### Load Factor and Rehashing
+
+- The load factor is a measure of how full the `HashMap` can get before it needs to resize. The default load factor is 0.75, meaning that when the number of entries exceeds 75% of the current capacity, the `HashMap` is resized.
+- Resizing involves creating a new array with double the capacity and rehashing all existing entries to the new buckets based on their hash codes.
+
+### Summary
+
+- A `HashMap` in Java uses an array of buckets to store key-value pairs, utilizing a hash function to determine the index for each key.
+- It handles collisions using linked lists or trees and dynamically resizes based on load factor.
+- This structure allows for efficient average-case time complexity for insertion, deletion, and retrieval operations, typically O(1).
+
+
