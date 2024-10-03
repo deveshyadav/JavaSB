@@ -578,3 +578,272 @@ public class MyApplication {
 The `@SpringBootApplication` annotation is a powerful and essential feature in Spring Boot that simplifies the configuration and setup of Spring applications, allowing developers to focus on building features rather than managing boilerplate code.
 
 
+
+**Question- Starting point of Springboot application**
+
+## Starting Point of a Spring Boot Application
+
+The starting point of a Spring Boot application is the class that contains the `main` method, which is typically annotated with `@SpringBootApplication`.
+
+### Components
+
+1. **Main Class with `@SpringBootApplication` Annotation**:
+   - This class serves as the entry point for the entire Spring Boot application.
+   - The `@SpringBootApplication` annotation combines `@Configuration`, `@EnableAutoConfiguration`, and `@ComponentScan` to configure and bootstrap the application.
+
+2. **`SpringApplication.run()` Method**:
+   - The `main` method uses the `SpringApplication.run()` method to launch the application. This method starts the Spring application context and the embedded server (e.g., Tomcat) if it is a web application.
+   - It also triggers the auto-configuration and scans the classpath for components to register as beans.
+
+### Example
+
+```Java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MyApplication {
+    public static void main(String[] args) {
+        // Starting point of the Spring Boot application
+        SpringApplication.run(MyApplication.class, args);
+    }
+}
+```
+
+### Explanation
+
+- **`main(String[] args)`**:
+  - The `main` method is the standard Java entry point for an application.
+  - `SpringApplication.run()` is used to bootstrap the application, which starts the Spring context and the embedded web server.
+
+- **How it Works**:
+  - When `SpringApplication.run()` is called, it creates an instance of `SpringApplication`, loads the application context, and performs the necessary auto-configuration based on the classpath.
+
+### Flow of Execution
+
+1. **Bootstrap**: The `main` method is executed, which then calls `SpringApplication.run()`.
+2. **Context Initialization**: Spring Boot creates and initializes the application context (Spring IoC container).
+3. **Component Scanning and Bean Creation**: Beans are created, dependencies are injected, and the auto-configuration kicks in to provide configurations for components like databases, web servers, etc.
+4. **Embedded Server Startup**: For web applications, an embedded web server like Tomcat or Jetty is started.
+5. **Application Ready**: After all configurations are done, the application is ready to handle requests or perform its intended operations.
+
+### Conclusion
+
+The starting point of a Spring Boot application is the main class with the `main` method. The `SpringApplication.run()` method plays a crucial role in bootstrapping the Spring Boot environment and starting the application.
+
+
+
+## Question `@Component` vs `@Bean` vs `@Configuration`
+
+### 1. `@Component`
+- `@Component` is a class-level annotation that is used to mark a class as a Spring-managed component.
+- Spring automatically detects classes annotated with `@Component` during component scanning and registers them as beans in the Spring application context.
+- It is part of the Spring stereotype annotations, which include `@Service`, `@Repository`, and `@Controller`, each serving a specific purpose but essentially working the same way as `@Component`.
+
+**Example**:
+```Java
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyComponent {
+    public void sayHello() {
+        System.out.println("Hello from MyComponent!");
+    }
+}
+```
+
+### 2. `@Bean`
+- `@Bean` is a method-level annotation that is used to define a bean explicitly in the Spring configuration.
+- It is typically used in a method annotated with `@Configuration` to create and manage beans that are not easily amenable to component scanning, such as third-party classes.
+- The method annotated with `@Bean` returns an instance of the bean that will be managed by Spring.
+
+**Example**:
+```Java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public MyComponent myComponent() {
+        return new MyComponent(); // MyComponent bean managed by Spring
+    }
+}
+```
+
+### 3. `@Configuration`
+- `@Configuration` is a class-level annotation that is used to indicate that the class can be used as a source of bean definitions.
+- Classes annotated with `@Configuration` are used to define Spring beans using the `@Bean` annotation.
+- It indicates that the class is a Spring configuration class, and its methods can be used to define and configure beans.
+
+**Example**:
+```Java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public MyComponent myComponent() {
+        return new MyComponent(); // MyComponent bean managed by Spring
+    }
+}
+```
+
+### Differences
+
+| Annotation      | Level       | Purpose                                                               | Usage Example                          |
+|-----------------|-------------|-----------------------------------------------------------------------|----------------------------------------|
+| `@Component`    | Class       | To mark a class as a Spring-managed component, discovered via scanning. | Used for general-purpose beans like services or repositories. |
+| `@Bean`         | Method      | To explicitly define a bean to be managed by the Spring container.    | Used when third-party or custom instantiation logic is required. |
+| `@Configuration`| Class       | To declare that a class provides Spring configuration.                | Used to create a centralized configuration for beans. |
+
+### Use Cases
+
+- **`@Component`**:
+  - Use it when you have classes under your control that are part of the core application logic and can be easily discovered via component scanning.
+- **`@Bean`**:
+  - Use it when you need to manually create beans, such as for third-party library classes or when instantiation requires custom logic.
+- **`@Configuration`**:
+  - Use it to define a class that declares one or more `@Bean` methods, which can be centralized in a configuration class to manage beans efficiently.
+
+### Example Comparison
+
+```Java
+// Using @Component
+@Component
+public class MyService {
+    // service code
+}
+
+// Using @Configuration and @Bean
+@Configuration
+public class AppConfig {
+    
+    @Bean
+    public MyService myService() {
+        return new MyService(); // MyService bean managed by Spring
+    }
+}
+```
+
+In the above examples, the `@Component` approach automatically registers the class, whereas `@Bean` is used in a configuration class to manually define the bean.
+
+
+**Question -**
+
+## `@Qualifier` with Bean Type
+
+### Overview
+- `@Qualifier` is an annotation in Spring used to differentiate between multiple beans of the same type.
+- When more than one bean of the same type is present in the Spring application context, `@Qualifier` can be used to specify which one should be injected.
+- It is used in conjunction with `@Autowired` to avoid ambiguity during dependency injection.
+
+### Example Scenario
+Suppose you have two implementations of an interface `Vehicle` and you want to decide which implementation to inject into a class.
+
+```Java
+public interface Vehicle {
+    void start();
+}
+
+@Component
+public class Car implements Vehicle {
+    @Override
+    public void start() {
+        System.out.println("Car started");
+    }
+}
+
+@Component
+public class Bike implements Vehicle {
+    @Override
+    public void start() {
+        System.out.println("Bike started");
+    }
+}
+```
+
+If you use `@Autowired` without `@Qualifier`, Spring will not know whether to inject `Car` or `Bike` because both implement the `Vehicle` interface.
+
+```Java
+@Component
+public class VehicleService {
+
+    private final Vehicle vehicle;
+
+    @Autowired
+    public VehicleService(Vehicle vehicle) {
+        this.vehicle = vehicle; // Ambiguity here - which Vehicle to inject?
+    }
+
+    public void useVehicle() {
+        vehicle.start();
+    }
+}
+```
+
+### Using `@Qualifier`
+To specify which implementation to inject, use `@Qualifier`:
+
+```Java
+@Component
+public class VehicleService {
+
+    private final Vehicle vehicle;
+
+    @Autowired
+    public VehicleService(@Qualifier("car") Vehicle vehicle) {
+        this.vehicle = vehicle; // Explicitly inject the Car implementation
+    }
+
+    public void useVehicle() {
+        vehicle.start();
+    }
+}
+```
+
+In this example, `@Qualifier("car")` tells Spring to inject the `Car` bean. The bean name (e.g., `"car"`) matches the class name by default (with the first letter in lowercase) unless explicitly specified otherwise.
+
+### Example with Method-Level `@Bean`
+You can also use `@Qualifier` with beans defined using `@Bean` in a configuration class.
+
+```Java
+@Configuration
+public class AppConfig {
+
+    @Bean
+    public Vehicle car() {
+        return new Car();
+    }
+
+    @Bean
+    public Vehicle bike() {
+        return new Bike();
+    }
+}
+
+@Component
+public class VehicleService {
+
+    private final Vehicle vehicle;
+
+    @Autowired
+    public VehicleService(@Qualifier("bike") Vehicle vehicle) {
+        this.vehicle = vehicle; // Explicitly inject the Bike bean
+    }
+
+    public void useVehicle() {
+        vehicle.start();
+    }
+}
+```
+
+### Summary
+- `@Qualifier` is useful when multiple beans of the same type are present, and you need to specify which one to inject.
+- It works with both `@Component`-scanned beans and `@Bean`-defined beans.
+- Always use the bean name specified in the `@Qualifier` to avoid ambiguity.
+
+
