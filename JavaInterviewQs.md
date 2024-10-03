@@ -307,3 +307,57 @@ public class EvenNumberCheck {
 - **Testing the Predicate:**
   - The `test` method is used to evaluate the predicate for different numbers.
 
+
+**Question 5- When and why abstraction exists in class and methods**
+## When and Why Abstraction Exists in Classes and Methods in Java
+
+Abstraction is a core concept in object-oriented programming (OOP) that focuses on exposing only the essential features of an object while hiding the implementation details. In Java, abstraction can be achieved using abstract classes and interfaces.
+
+### When Abstraction Exists
+1. **Abstract Classes**:
+   - Used when you want to provide a common base for a group of related classes while still allowing for flexibility in implementation.
+   - An abstract class can have both abstract methods (without a body) and concrete methods (with a body).
+   - Example: A `Shape` class can be abstract with an abstract method `draw()`, allowing different shapes (like `Circle`, `Rectangle`) to implement their own version of `draw()`.
+
+2. **Interfaces**:
+   - Used when you want to define a contract that other classes must adhere to without dictating how they should be implemented.
+   - An interface can contain only method signatures (abstract methods) and constants. From Java 8 onwards, it can also have default and static methods.
+   - Example: An interface `Animal` can define a method `makeSound()`, which all animal classes (like `Dog`, `Cat`) must implement.
+
+### Why Abstraction Exists
+1. **Encapsulation of Complexity**:
+   - By hiding the complex implementation details and exposing only the necessary parts, abstraction simplifies the interaction with objects.
+   - This leads to easier understanding and usage of classes and methods.
+
+2. **Code Reusability**:
+   - Abstraction promotes code reusability by allowing developers to define methods in an abstract class or interface, which can be implemented by multiple subclasses.
+
+3. **Maintainability**:
+   - Changes to the implementation of abstract methods do not affect the classes that use them, making the codebase easier to maintain and update.
+
+4. **Flexibility and Extensibility**:
+   - New classes can be created to extend or implement abstract classes or interfaces without modifying existing code, promoting flexibility and extensibility in software design.
+
+### Summary
+- Abstraction exists in Java classes and methods to encapsulate complexity, enhance code reusability, maintainability, and provide flexibility in design.
+
+
+
+**Question 6- What is base class of exception**
+## What is the Base Class of Exception in Java?
+
+In Java, the base class for all exceptions is the `Throwable` class. It serves as the superclass for all error and exception classes in Java. The `Throwable` class is found in the `java.lang` package.
+
+### Hierarchy of Exception Classes
+
+1. **Throwable**:
+   - The root class for all errors and exceptions.
+   - Has two primary subclasses:
+     - **Error**: Represents serious problems that a reasonable application should not try to catch. Errors are typically not recoverable. For example, `OutOfMemoryError` and `StackOverflowError`.
+     - **Exception**: Represents conditions that a reasonable application might want to catch. This class is further divided into checked exceptions and unchecked exceptions.
+
+2. **Exception**:
+   - Subclass of `Throwable`.
+   - Checked exceptions (e.g., `IOException`, `SQLException`): Must be either caught or declared in the method signature using the `throws` keyword.
+  
+
