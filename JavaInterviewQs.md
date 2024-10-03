@@ -23,6 +23,7 @@ Runnable runnableLambda = () -> System.out.println("Hello from Lambda");
 Functional interfaces are interfaces with a single abstract method. They can be represented by lambda expressions. 
 Java 8 introduced several built-in functional interfaces, such as Predicate, Function, Consumer, etc.
 
+```
 @FunctionalInterface
 interface MyFunctionalInterface {
     void doSomething();
