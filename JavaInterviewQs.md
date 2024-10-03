@@ -534,3 +534,47 @@ double loadFactor = (double) numberOfEntries / numberOfBuckets; // 0.7
 The load factor is an important aspect of hash tables, as it affects both performance and memory usage. Understanding how the load factor
 
 
+## Question- @SpringBootApplication
+
+## SpringBootApplication Annotation
+
+The `@SpringBootApplication` annotation is a convenience annotation that combines three important annotations in Spring Boot. It serves as a central configuration annotation for Spring Boot applications.
+
+### Components of @SpringBootApplication
+
+1. **@Configuration**:
+   - Indicates that the class can be used by the Spring IoC (Inversion of Control) container as a source of bean definitions. It allows you to define beans using the `@Bean` annotation.
+
+2. **@EnableAutoConfiguration**:
+   - Enables Spring Boot's auto-configuration mechanism. This automatically configures your Spring application based on the dependencies present on the classpath. For example, if you have `spring-boot-starter-web` on the classpath, it will automatically configure a web server.
+
+3. **@ComponentScan**:
+   - Instructs Spring to scan the current package and its sub-packages for components, configurations, and services. This is where Spring looks for classes annotated with `@Component`, `@Service`, `@Repository`, etc.
+
+### Usage
+
+To use the `@SpringBootApplication` annotation, simply place it on your main application class. Here’s an example:
+
+```Java
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MyApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(MyApplication.class, args);
+    }
+}
+```
+
+### Benefits
+
+- **Simplicity**: Reduces boilerplate code by consolidating multiple annotations into one.
+- **Convention over Configuration**: Promotes a default setup, making it easier to get started with Spring Boot.
+- **Ease of Use**: Makes it straightforward to create and configure a Spring application.
+
+### Conclusion
+
+The `@SpringBootApplication` annotation is a powerful and essential feature in Spring Boot that simplifies the configuration and setup of Spring applications, allowing developers to focus on building features rather than managing boilerplate code.
+
+
