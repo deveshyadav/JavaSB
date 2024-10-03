@@ -36,6 +36,7 @@ public class SingletonDemo {
 
 
 //Factorty Method
+
 // Abstract Product
 interface Animal {
     void speak();
@@ -91,6 +92,7 @@ public class FactoryMethodDemo {
 }
 
 //Abstract Factory Pattern
+
 // Abstract Products
 interface Chair {
     void sitOn();
@@ -182,6 +184,7 @@ public class AbstractFactoryDemo {
 
 
 //Builder Pattern
+
 // Product
 class House {
     private String walls;
@@ -264,6 +267,7 @@ public class BuilderPatternDemo {
 
 
 //Prototype Pattern
+
 // Prototype
 abstract class Shape implements Cloneable {
     private String id;
