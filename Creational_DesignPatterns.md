@@ -36,12 +36,13 @@ public class SingletonDemo {
 
 
 /*//Factorty Method // Abstract Product*/
-interface Animal {
+
+public interface Animal {
     void speak();
 }
 
 /*// Concrete Product A*/
-class Dog implements Animal {
+public class Dog implements Animal {
     @Override
     public void speak() {
         System.out.println("Woof!");
@@ -49,7 +50,7 @@ class Dog implements Animal {
 }
 
 /*// Concrete Product B*/
-class Cat implements Animal {
+public class Cat implements Animal {
     @Override
     public void speak() {
         System.out.println("Meow!");
