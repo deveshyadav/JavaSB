@@ -6,15 +6,15 @@ Creational Design Patterns
 4. Builder: Separates the construction of a complex object from its representation so that the same construction process can create different representations.
 5. Prototype: Creates new objects by copying an existing object, known as the prototype.
 
-//Singleton Pattern
+/*Singleton Pattern*/
 public class Singleton {
-    // Private static instance of the class
+    /*// Private static instance of the class*/
     private static Singleton instance;
 
-    // Private constructor to prevent instantiation
+    /*// Private constructor to prevent instantiation*/
     private Singleton() {}
 
-    // Public method to provide access to the instance
+    /*// Public method to provide access to the instance*/
     public static Singleton getInstance() {
         if (instance == null) {
             instance = new Singleton();
@@ -35,14 +35,12 @@ public class SingletonDemo {
 }
 
 
-//Factorty Method
-
-// Abstract Product
+/*//Factorty Method // Abstract Product*/
 interface Animal {
     void speak();
 }
 
-// Concrete Product A
+/*// Concrete Product A*/
 class Dog implements Animal {
     @Override
     public void speak() {
@@ -50,7 +48,7 @@ class Dog implements Animal {
     }
 }
 
-// Concrete Product B
+/*// Concrete Product B*/
 class Cat implements Animal {
     @Override
     public void speak() {
@@ -58,12 +56,12 @@ class Cat implements Animal {
     }
 }
 
-// Creator
+/*// Creator*/
 abstract class AnimalFactory {
     abstract Animal createAnimal();
 }
 
-// Concrete Creator A
+/*// Concrete Creator A*/
 class DogFactory extends AnimalFactory {
     @Override
     Animal createAnimal() {
@@ -71,7 +69,7 @@ class DogFactory extends AnimalFactory {
     }
 }
 
-// Concrete Creator B
+/*// Concrete Creator B*/
 class CatFactory extends AnimalFactory {
     @Override
     Animal createAnimal() {
@@ -91,9 +89,7 @@ public class FactoryMethodDemo {
     }
 }
 
-//Abstract Factory Pattern
-
-// Abstract Products
+/*//Abstract Factory Pattern // Abstract Products*/
 interface Chair {
     void sitOn();
 }
@@ -102,7 +98,7 @@ interface Table {
     void use();
 }
 
-// Concrete Product A1
+/*// Concrete Product A1*/
 class VictorianChair implements Chair {
     @Override
     public void sitOn() {
@@ -110,7 +106,7 @@ class VictorianChair implements Chair {
     }
 }
 
-// Concrete Product A2
+/*// Concrete Product A2*/
 class ModernChair implements Chair {
     @Override
     public void sitOn() {
@@ -118,7 +114,7 @@ class ModernChair implements Chair {
     }
 }
 
-// Concrete Product B1
+/*// Concrete Product B1*/
 class VictorianTable implements Table {
     @Override
     public void use() {
@@ -126,7 +122,7 @@ class VictorianTable implements Table {
     }
 }
 
-// Concrete Product B2
+/*// Concrete Product B2*/
 class ModernTable implements Table {
     @Override
     public void use() {
@@ -134,13 +130,13 @@ class ModernTable implements Table {
     }
 }
 
-// Abstract Factory
+/*// Abstract Factory*/
 interface FurnitureFactory {
     Chair createChair();
     Table createTable();
 }
 
-// Concrete Factory A
+/*// Concrete Factory A*/
 class VictorianFurnitureFactory implements FurnitureFactory {
     @Override
     public Chair createChair() {
@@ -153,7 +149,7 @@ class VictorianFurnitureFactory implements FurnitureFactory {
     }
 }
 
-// Concrete Factory B
+/*// Concrete Factory B*/
 class ModernFurnitureFactory implements FurnitureFactory {
     @Override
     public Chair createChair() {
@@ -171,21 +167,19 @@ public class AbstractFactoryDemo {
         FurnitureFactory factory = new VictorianFurnitureFactory();
         Chair chair = factory.createChair();
         Table table = factory.createTable();
-        chair.sitOn();  // Output: Sitting on a Victorian chair.
-        table.use();    // Output: Using a Victorian table.
+        chair.sitOn();  /*// Output: Sitting on a Victorian chair.*/
+        table.use();   /* // Output: Using a Victorian table.*/
 
         factory = new ModernFurnitureFactory();
         chair = factory.createChair();
         table = factory.createTable();
-        chair.sitOn();  // Output: Sitting on a modern chair.
-        table.use();    // Output: Using a modern table.
+        chair.sitOn();  /*// Output: Sitting on a modern chair.*/
+        table.use();    /*// Output: Using a modern table.*/
     }
 }
 
 
-//Builder Pattern
-
-// Product
+/*//Builder Pattern // Product*/
 class House {
     private String walls;
     private String roof;
@@ -209,7 +203,7 @@ class House {
     }
 }
 
-// Builder
+/*// Builder*/
 abstract class HouseBuilder {
     protected House house = new House();
 
@@ -222,7 +216,7 @@ abstract class HouseBuilder {
     }
 }
 
-// Concrete Builder
+/*// Concrete Builder*/
 class ConcreteHouseBuilder extends HouseBuilder {
     @Override
     void buildWalls() {
@@ -240,7 +234,7 @@ class ConcreteHouseBuilder extends HouseBuilder {
     }
 }
 
-// Director
+/*// Director*/
 class HouseDirector {
     private HouseBuilder builder;
 
@@ -266,9 +260,7 @@ public class BuilderPatternDemo {
 }
 
 
-//Prototype Pattern
-
-// Prototype
+/*//Prototype Pattern // Prototype*/
 abstract class Shape implements Cloneable {
     private String id;
     String type;
@@ -295,7 +287,7 @@ abstract class Shape implements Cloneable {
     }
 }
 
-// Concrete Prototype A
+/*// Concrete Prototype A*/
 class Circle extends Shape {
     public Circle() {
         type = "Circle";
@@ -307,7 +299,7 @@ class Circle extends Shape {
     }
 }
 
-// Concrete Prototype B
+/*// Concrete Prototype B*/
 class Square extends Shape {
     public Square() {
         type = "Square";
@@ -319,7 +311,7 @@ class Square extends Shape {
     }
 }
 
-// Prototype Registry
+/*// Prototype Registry*/
 class ShapeCache {
     private static Map<String, Shape> shapeMap = new HashMap<>();
 
@@ -345,11 +337,11 @@ public class PrototypePatternDemo {
 
         Shape clonedShape1 = ShapeCache.getShape("1");
         System.out.println("Shape : " + clonedShape1.type);
-        clonedShape1.draw(); // Output: Drawing a Circle
+        clonedShape1.draw(); /*// Output: Drawing a Circle*/
 
         Shape clonedShape2 = ShapeCache.getShape("2");
         System.out.println("Shape : " + clonedShape2.type);
-        clonedShape2.draw(); // Output: Drawing a Square
+        clonedShape2.draw(); /*// Output: Drawing a Square*/
     }
 }
 
