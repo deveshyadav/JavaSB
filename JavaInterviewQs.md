@@ -492,9 +492,11 @@ int capacity = 10;
 int key1 = 12;
 int key2 = 22;
 
-int index1 = key1 % capacity; 
+int index1 = key1 % capacity;
+```
 
-## Question - What is a Load Factor?
+ 
+## Question 8- What is a Load Factor?
 
 The **load factor** is a measure used in hash-based data structures, such as `HashMap`, to determine how full the data structure is. It is defined as the ratio of the number of entries (key-value pairs) to the total number of buckets (or slots) in the hash table.
 
