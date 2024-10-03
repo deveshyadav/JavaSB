@@ -441,3 +441,94 @@ The `put` method in a `HashMap` is used to insert key-value pairs into the map. 
        // Traverse the linked list or tree structure to find the key
        for (Entry entry
 
+
+## Question 8- What is Hash Collision?
+
+A **hash collision** occurs when two different keys produce the same hash code when passed through a hash function. In the context of data structures like `HashMap`, this means that two distinct keys are mapped to the same index in the underlying array (buckets).
+
+### How Hash Collisions Happen
+
+- Hash functions are designed to distribute keys uniformly across the available indices. However, due to the finite size of the hash table and the potentially infinite number of keys, it is inevitable that some keys will hash to the same index.
+  
+- For example, consider a simple hash function that uses the modulo operator:
+
+  ```java
+  int hashCode = key.hashCode();
+  int index = hashCode % capacity; // capacity is the size of the bucket array
+  ```
+
+  If two different keys, `key1` and `key2`, have hash codes such that:
+
+  ```
+  key1.hashCode() % capacity == key2.hashCode() % capacity
+  ```
+
+  Then both keys will map to the same index, resulting in a collision.
+
+### Handling Hash Collisions
+
+`HashMap` uses several techniques to handle collisions:
+
+1. **Chaining**:
+   - Each index in the hash table contains a linked list (or tree structure) of entries. When a collision occurs, the new entry is added to the list at that index.
+
+   ```java
+   // Pseudocode for chaining
+   if (buckets[index] == null) {
+       buckets[index] = new Entry(key, value);
+   } else {
+       // Traverse the linked list to find the key or append new entry
+   }
+   ```
+
+2. **Open Addressing**:
+   - In this approach, if a collision occurs, the algorithm looks for the next available index in the array (linear probing, quadratic probing, or double hashing) until it finds an empty slot.
+
+### Example of a Hash Collision
+
+```java
+// Assuming a simple hash function and a small bucket array size
+int capacity = 10;
+int key1 = 12;
+int key2 = 22;
+
+int index1 = key1 % capacity; 
+
+## Question - What is a Load Factor?
+
+The **load factor** is a measure used in hash-based data structures, such as `HashMap`, to determine how full the data structure is. It is defined as the ratio of the number of entries (key-value pairs) to the total number of buckets (or slots) in the hash table.
+
+### Formula
+
+The load factor can be calculated using the following formula:
+
+```
+Load Factor = Number of Entries / Number of Buckets
+```
+
+### Significance of Load Factor
+
+1. **Performance**:
+   - A higher load factor means that the hash table is more filled, which can lead to more hash collisions and consequently longer lookup times. 
+   - A lower load factor indicates more empty buckets, which generally leads to better performance as there are fewer collisions.
+
+2. **Resizing**:
+   - In most hash table implementations, such as `HashMap`, a threshold is set for the load factor (commonly 0.75). When the load factor exceeds this threshold, the hash table is resized (usually doubled in size), and all existing entries are rehashed into the new buckets. 
+   - This resizing process helps maintain efficient performance by keeping the load factor within a reasonable range.
+
+### Example
+
+Suppose we have a `HashMap` with a capacity of 10 (10 buckets) and currently holds 7 entries. The load factor would be calculated as follows:
+
+```java
+int numberOfEntries = 7;
+int numberOfBuckets = 10;
+
+double loadFactor = (double) numberOfEntries / numberOfBuckets; // 0.7
+```
+
+### Conclusion
+
+The load factor is an important aspect of hash tables, as it affects both performance and memory usage. Understanding how the load factor
+
+
