@@ -408,3 +408,36 @@ A `HashMap` in Java is a part of the Java Collections Framework and implements t
 - This structure allows for efficient average-case time complexity for insertion, deletion, and retrieval operations, typically O(1).
 
 
+## Question 7- Internal Working of HashMap `put` Method
+
+The `put` method in a `HashMap` is used to insert key-value pairs into the map. Here's how it works internally:
+
+### Step-by-Step Process
+
+1. **Calculate Hash Code**:
+   - When the `put` method is called with a key-value pair, the first step is to calculate the hash code of the key using the `hashCode()` method.
+   - This hash code is then processed to get an index for the array (buckets) where the entry should be stored.
+
+   ```java
+   int hash = key.hashCode();
+   int index = hash % capacity; // capacity is the size of the bucket array
+   ```
+
+2. **Locate Bucket**:
+   - The index computed is used to locate the appropriate bucket in the internal array of the `HashMap`.
+
+3. **Check for Existing Entries**:
+   - If the bucket at the computed index is empty, the new key-value pair is added directly.
+   - If there are existing entries in the bucket (due to hash collisions), the `HashMap` checks each entry:
+     - If an entry with the same key is found, the associated value is updated with the new value.
+     - If no entry with the same key is found, the new entry is appended to the bucket.
+
+   ```java
+   // If bucket is empty, create a new Entry
+   if (bucket == null) {
+       bucket = new Entry(key, value);
+       buckets[index] = bucket; // Add to the array
+   } else {
+       // Traverse the linked list or tree structure to find the key
+       for (Entry entry
+
