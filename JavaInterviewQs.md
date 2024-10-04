@@ -847,3 +847,49 @@ public class VehicleService {
 - Always use the bean name specified in the `@Qualifier` to avoid ambiguity.
 
 
+### Question SQL Query: Find Employees Who Are Managers and Belong to a Different Department Than the One They Manage
+
+#### **Question:**
+You are given two tables: `Employees` and `Departments`. Write a query to find all employees who are **managers** and belong to a **different department** than the one they manage.
+
+#### **Schema Example:**
+
+1. **`Employees` Table**:
+
+| employee_id | employee_name | department_id | manager_id |
+|-------------|---------------|---------------|------------|
+| 1           | Alice         | 10            | NULL       |
+| 2           | Bob           | 20            | 1          |
+| 3           | Charlie       | 10            | 1          |
+| 4           | David         | 30            | NULL       |
+| 5           | Eve           | 40            | 4          |
+| 6           | Frank         | 50            | 4          |
+| 7           | Grace         | 30            | 5          |
+
+- **employee_id**: Unique ID for each employee.
+- **department_id**: The department the employee belongs to.
+- **manager_id**: The ID of the employee’s manager (NULL if the employee is a manager).
+
+2. **`Departments` Table**:
+
+| department_id | department_name | manager_id |
+|---------------|-----------------|------------|
+| 10            | Sales           | 1          |
+| 20            | Marketing       | 3          |
+| 30            | IT              | 5          |
+| 40            | HR              | 4          |
+| 50            | R&D             | 6          |
+
+- **department_id**: Unique ID for each department.
+- **manager_id**: The ID of the employee who manages the department.
+
+#### **SQL Query:**
+
+```sql
+SELECT e.employee_id, e.employee_name, e.department_id AS employee_department, d.department_id AS managed_department
+FROM Employees e
+JOIN Departments d ON e.employee_id = d.manager_id
+WHERE e.department_id != d.department_id;
+
+
+
