@@ -890,6 +890,36 @@ SELECT e.employee_id, e.employee_name, e.department_id AS employee_department, d
 FROM Employees e
 JOIN Departments d ON e.employee_id = d.manager_id
 WHERE e.department_id != d.department_id;
+```
 
+
+### SQL Query: Fetch the Second Highest Salary Employee
+
+#### **Question:**
+Write a SQL query to retrieve the **second-highest salary** employee from the `Employees` table.
+
+#### **Schema Example:**
+
+| employee_id | employee_name | salary |
+|-------------|---------------|--------|
+| 1           | Alice         | 100000 |
+| 2           | Bob           | 80000  |
+| 3           | Charlie       | 120000 |
+| 4           | David         | 90000  |
+| 5           | Eve           | 120000 |
+
+#### **Approach 1: Using a Subquery**
+
+This approach uses a subquery to find the second-highest salary by first finding the maximum salary and then looking for the next maximum value that is less than it.
+
+```sql
+SELECT employee_name, salary
+FROM Employees
+WHERE salary = (
+    SELECT MAX(salary) 
+    FROM Employees 
+    WHERE salary < (SELECT MAX(salary) FROM Employees)
+);
+```
 
 
