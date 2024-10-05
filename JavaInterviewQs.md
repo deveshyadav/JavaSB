@@ -1907,7 +1907,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 }
 ```
 
-## 3. Hibernate:
+### 3. Hibernate:
 Definition: Hibernate is a widely-used ORM framework that implements JPA. It is a full-fledged framework for managing database operations with Java objects.
 Purpose: Hibernate allows for advanced ORM functionalities and provides additional features over JPA. It supports a wide range of databases and simplifies complex data management tasks.
 Key Features:
@@ -2021,7 +2021,683 @@ spring.jpa.show-sql=true
 
 ```
 
-**A**
-# A
-## A
-### A
+
+## Question -Features of java 17
+
+Java 17, released as a Long-Term Support (LTS) version, brought several improvements and new features to the language. Here are some key highlights:
+
+### 1. **Sealed Classes (JEP 409)**
+Sealed classes allow you to restrict which other classes or interfaces may extend or implement them. This feature helps in controlling the inheritance hierarchy.
+
+```java
+public abstract sealed class Shape permits Circle, Rectangle { }
+public final class Circle extends Shape { }
+public final class Rectangle extends Shape { }
+```
+### 2. Pattern Matching for switch (Preview) (JEP 406)
+Pattern matching in switch statements simplifies how you handle conditional logic based on the type of an object. This feature was introduced as a preview in Java 17.
+```java
+switch (shape) {
+    case Circle c -> System.out.println("Circle with radius " + c.radius());
+    case Rectangle r -> System.out.println("Rectangle with area " + r.area());
+    default -> throw new IllegalArgumentException("Unknown shape");
+}
+
+```
+
+### 3. Strong Encapsulation by Default (JEP 403)
+With Java 17, the encapsulation of the JDK internals becomes stronger by default. This means that access to internal APIs (like sun.misc.Unsafe) is further restricted unless explicitly allowed via command-line flags.
+
+### 4. Context-Specific Deserialization Filters (JEP 415)
+This feature provides a mechanism to improve security by allowing applications to configure deserialization filters for incoming streams. It helps in preventing attacks like deserialization vulnerabilities.
+
+### 5. Removal of the Applet API (JEP 398)
+The Applet API, which has been considered outdated, was finally removed in Java 17. Applets were already deprecated and rarely used due to modern web alternatives like HTML5.
+
+### 6. Foreign Function & Memory API (Incubator) (JEP 412)
+Introduced as an incubator feature, this API allows Java programs to interact with native code and access foreign memory outside the Java heap in a more efficient way.
+
+### 7. Vector API (Second Incubator) (JEP 414)
+The second incubation of the Vector API allows developers to express vector computations, which can be optimized at runtime for better performance on supported hardware architectures.
+
+### 8. Deprecate the Security Manager for Removal (JEP 411)
+Java 17 deprecates the Security Manager with the intention of removing it in a future release. This was historically used for sandboxing applications, but it has become less relevant with modern security practices.
+
+### 9. macOS/AArch64 Port (JEP 391)
+This feature adds support for the macOS/AArch64 platform, which is particularly useful with the growing popularity of Apple Silicon (M1 chip).
+
+### 10. Text Blocks (Standardized)
+Though introduced in earlier versions, text blocks are now fully supported in Java 17. They allow multi-line strings that simplify code readability, especially for JSON, XML, and SQL queries.
+
+```java
+String json = """
+              {
+                  "name": "John",
+                  "age": 30
+              }
+              """;
+```
+### 11. Garbage Collection Improvements
+Java 17 includes improvements to the Z Garbage Collector (ZGC) and the G1 Garbage Collector, making them more efficient in memory management and reducing application pause times.
+
+### 12. Deprecation of RMI Activation (JEP 407)
+The Remote Method Invocation (RMI) Activation mechanism has been deprecated, which was rarely used in modern applications.
+
+
+
+## Question- MongoDB vs Mysql
+## MongoDB vs MySQL
+
+### 1. **Data Model**
+- **MongoDB**: NoSQL, document-based database that stores data in flexible, JSON-like BSON (Binary JSON) documents. It is schema-less, meaning the structure of the data can vary across documents in the same collection.
+- **MySQL**: Relational database management system (RDBMS) that stores data in tables with fixed schemas. It uses SQL (Structured Query Language) to manage and query data.
+
+### 2. **Schema**
+- **MongoDB**: Schema-less, allowing dynamic and flexible document structures. This is useful for applications where data structures change frequently.
+- **MySQL**: Schema-based, requiring a predefined structure with tables, rows, and columns. Data must adhere to the specified schema.
+
+### 3. **Scalability**
+- **MongoDB**: Horizontal scaling (sharding) is built-in and is suitable for large-scale applications. It scales out by distributing data across multiple servers.
+- **MySQL**: Typically scales vertically (by upgrading hardware). Horizontal scaling (sharding) is possible but more complex to implement compared to MongoDB.
+
+### 4. **Transactions**
+- **MongoDB**: Supports multi-document ACID transactions (starting from version 4.0), but transactions are typically more lightweight and limited compared to relational databases.
+- **MySQL**: Strong support for ACID transactions, making it ideal for applications requiring high data integrity (e.g., banking systems).
+
+### 5. **Query Language**
+- **MongoDB**: Uses a flexible query language that is JSON-like. It supports complex queries with aggregation pipelines.
+- **MySQL**: Uses SQL, a standard and widely adopted query language with powerful features for joining, filtering, grouping, and manipulating data.
+
+### 6. **Performance**
+- **MongoDB**: Excels with large datasets, read-heavy workloads, and unstructured data. Its performance is better for applications that don't require complex joins.
+- **MySQL**: Performs well with structured data and when executing complex joins. However, it may struggle with very large datasets unless optimized.
+
+### 7. **Use Cases**
+- **MongoDB**: Best suited for applications with unstructured or semi-structured data, such as content management systems, real-time analytics, and IoT applications.
+- **MySQL**: Ideal for applications that require structured data and ACID compliance, such as financial systems, e-commerce platforms, and enterprise resource planning (ERP) systems.
+
+### 8. **Indexes**
+- **MongoDB**: Supports a variety of index types (e.g., single field, compound, geospatial). Indexes are stored as BSON objects and can handle large, distributed datasets.
+- **MySQL**: Uses B-tree indexes for optimal performance on primary keys, foreign keys, and commonly queried columns. Indexing plays a major role in performance optimization for complex queries.
+
+### 9. **Joins**
+- **MongoDB**: Does not support traditional SQL-style joins. Instead, it relies on embedding or linking documents through references. Aggregation pipelines can be used for similar functionality.
+- **MySQL**: Supports complex joins between multiple tables, which makes it ideal for relational data with multiple associations.
+
+### 10. **Backup and Recovery**
+- **MongoDB**: Offers point-in-time backups, but its distributed nature makes recovery slightly more complex.
+- **MySQL**: Provides built-in support for backups (using tools like `mysqldump`), and recovery processes are well-established and simpler for single-node setups.
+
+### 11. **Community & Support**
+- **MongoDB**: Growing rapidly with a large community of developers, particularly in the NoSQL and big data space.
+- **MySQL**: One of the most popular databases worldwide, with a vast community and a large array of online resources.
+
+### **Summary of Key Differences:**
+- **MongoDB**: Flexible, schema-less, NoSQL database ideal for large, unstructured, or semi-structured datasets.
+- **MySQL**: Structured, schema-based RDBMS that excels at handling relational data with powerful SQL queries.
+
+
+## Question- Spriongboot key components
+## Spring Boot Key Components
+
+### 1. **Spring Boot Starter**
+- **Description**: Starters are a set of convenient dependency descriptors you can include in your application. They simplify Maven or Gradle configuration by grouping common dependencies for various functionalities.
+- **Example**: `spring-boot-starter-web` includes dependencies for building web applications, including Spring MVC, Tomcat, and Jackson.
+
+### 2. **Spring Boot Auto-Configuration**
+- **Description**: This feature automatically configures your Spring application based on the dependencies present on the classpath. It reduces the need for manual bean configuration.
+- **How it Works**: It uses the `@EnableAutoConfiguration` annotation to enable auto-configuration and relies on conditional configurations to determine which beans to create.
+
+### 3. **Spring Boot Actuator**
+- **Description**: Provides built-in endpoints for monitoring and managing Spring Boot applications in production. It exposes operational information about the application.
+- **Features**: Health checks, metrics gathering, environment details, and more can be accessed via HTTP endpoints or JMX.
+
+### 4. **Spring Boot CLI**
+- **Description**: A command-line tool that allows you to run and test Spring Boot applications quickly without the need for a full development environment.
+- **Usage**: You can create Groovy scripts and run them using the CLI to quickly prototype or build applications.
+
+### 5. **Spring Boot Initializr**
+- **Description**: A web-based tool (https://start.spring.io/) that allows you to quickly generate a Spring Boot project with your desired dependencies and configurations.
+- **Usage**: You can select project metadata (like Group, Artifact, Name) and dependencies, and it generates a ZIP file containing the project structure.
+
+### 6. **Spring Boot Configuration Properties**
+- **Description**: Allows externalizing configuration properties in application.properties or application.yml files. You can bind these properties to Java objects using `@ConfigurationProperties`.
+- **Example**:
+  ```java
+  @ConfigurationProperties(prefix = "app")
+  public class AppConfig {
+      private String name;
+      private String version;
+      // getters and setters
+  }
+  ```
+
+
+### 7. Embedded Servers
+- **Description**: Spring Boot supports embedded servers like Tomcat, Jetty, and Undertow, allowing you to run applications without deploying them to an external server.
+- **Benefit**: Simplifies the deployment process by packaging the server within the application itself.
+
+### 8. Spring Boot Testing
+- **Description**: Provides utilities and annotations to facilitate testing Spring Boot applications. It includes support for unit tests, integration tests, and mocking.
+- **Annotations**: Commonly used annotations include `@SpringBootTest`, `@MockBean`, and `@DataJpaTest`.
+
+### 9. Spring Boot Profiles
+- **Description**: Profiles allow you to create different configurations for different environments (e.g., dev, test, prod). You can activate a profile using the `spring.profiles.active` property.
+- **Usage**: You can define environment-specific properties in files like `application-dev.properties` and `application-prod.properties`.
+
+### 10. Spring Boot DevTools
+- **Description**: A set of tools that enhance the development experience by providing features like automatic restarts, live reload, and enhanced error messages.
+- **Usage**: It speeds up development cycles by reducing the need for manual restarts.
+
+
+## Question- ImportNT Linux commands
+
+# Important Linux Commands
+
+1. **ls**: List files and directories.
+2. **cd**: Change directory.
+3. **pwd**: Print working directory.
+4. **mkdir**: Create a new directory.
+5. **rmdir**: Remove an empty directory.
+6. **rm**: Remove files or directories.
+7. **cp**: Copy files or directories.
+8. **mv**: Move or rename files or directories.
+9. **cat**: View contents of a file.
+10. **less**: View file content page by page.
+11. **echo**: Display a line of text or a variable value.
+12. **chmod**: Change file permissions.
+13. **chown**: Change file owner and group.
+14. **ps**: Display currently running processes.
+15. **top**: Show real-time system resource usage.
+
+
+## Question- Controller vs RestController
+# @Controller vs @RestController
+
+## @Controller
+- **Purpose**: Indicates that a class serves as a controller in the Spring MVC framework.
+- **Response Type**: Returns a view name (JSP, HTML) that is resolved by a view resolver.
+- **Usage**: Typically used in web applications where server-side rendering is needed.
+
+## @RestController
+- **Purpose**: Combines `@Controller` and `@ResponseBody`, indicating that the class serves RESTful web services.
+- **Response Type**: Returns JSON or XML responses directly from the methods, without needing a view resolver.
+- **Usage**: Ideal for building REST APIs where data is exchanged in formats like JSON.
+
+
+
+## Question- Important HTTP codes
+# Important HTTP Status Codes
+
+1. **200 OK**
+   - **Usage**: Request succeeded, and the server returned the requested data.
+
+2. **201 Created**
+   - **Usage**: Resource successfully created, often used in response to POST requests.
+
+3. **204 No Content**
+   - **Usage**: Request succeeded, but there's no content to send back (often used for DELETE requests).
+
+4. **301 Moved Permanently**
+   - **Usage**: The requested resource has been permanently moved to a new URL.
+
+5. **302 Found**
+   - **Usage**: The requested resource temporarily resides under a different URI.
+
+6. **400 Bad Request**
+   - **Usage**: The server cannot process the request due to a client error (e.g., malformed request syntax).
+
+7. **401 Unauthorized**
+   - **Usage**: Authentication is required and has failed or has not yet been provided.
+
+8. **403 Forbidden**
+   - **Usage**: The server understands the request but refuses to authorize it.
+
+9. **404 Not Found**
+   - **Usage**: The requested resource could not be found on the server.
+
+10. **500 Internal Server Error**
+    - **Usage**: A generic error message indicating that the server encountered an unexpected condition.
+
+11. **502 Bad Gateway**
+    - **Usage**: The server, while acting as a gateway, received an invalid response from an upstream server.
+
+12. **503 Service Unavailable**
+    - **Usage**: The server is currently unable to handle the request due to temporary overloading or maintenance.
+
+
+
+## Question- What is docker? What problem it solved, and benefits.
+# What is Docker?
+
+Docker is an open-source platform that automates the deployment, scaling, and management of applications within lightweight, portable containers. A container packages an application and its dependencies into a single executable unit, ensuring consistency across different environments.
+
+## Problems Solved by Docker
+
+1. **Environment Consistency**:
+   - Docker eliminates the "it works on my machine" problem by ensuring that applications run the same way across development, testing, and production environments.
+
+2. **Dependency Management**:
+   - It allows developers to package all the dependencies required for an application within the container, simplifying the setup process.
+
+3. **Isolation**:
+   - Each container runs in its own environment, providing process isolation and improving security.
+
+4. **Resource Efficiency**:
+   - Containers share the host OS kernel, making them lightweight and quick to start compared to traditional virtual machines.
+
+5. **Scalability**:
+   - Docker makes it easy to scale applications by creating multiple instances of containers quickly.
+
+## Benefits of Docker
+
+1. **Portability**:
+   - Applications packaged in Docker containers can run on any machine that has Docker installed, regardless of the underlying OS.
+
+2. **Speed**:
+   - Containers can be started almost instantly, leading to faster deployment cycles.
+
+3. **Version Control**:
+   - Docker images can be versioned, allowing teams to track changes and roll back to previous versions easily.
+
+4. **Microservices Architecture**:
+   - Docker supports microservices by allowing each service to run in its own container, making it easier to develop, deploy, and manage.
+
+5. **Community and Ecosystem**:
+   - Docker has a vast community and rich ecosystem, including Docker Hub, which provides a repository for sharing container images.
+
+6. **CI/CD Integration**:
+   - Docker integrates well with continuous integration and continuous deployment (CI/CD) tools, streamlining the development workflow.
+
+
+## Question- SOLID priniciples
+
+# SOLID Principles
+
+SOLID is an acronym that represents five design principles intended to make software designs more understandable, flexible, and maintainable. These principles are especially relevant in object-oriented programming and are aimed at improving software design. 
+
+## 1. Single Responsibility Principle (SRP)
+- **Definition**: A class should have only one reason to change, meaning it should have only one job or responsibility.
+- **Benefit**: Reduces the complexity of the class and makes it easier to understand and maintain. Changes to one part of the functionality will not affect other parts.
+
+## 2. Open/Closed Principle (OCP)
+- **Definition**: Software entities (classes, modules, functions, etc.) should be open for extension but closed for modification.
+- **Benefit**: This principle encourages the use of interfaces or abstract classes, allowing new functionality to be added without changing existing code. It promotes code stability and reduces the risk of introducing bugs.
+
+## 3. Liskov Substitution Principle (LSP)
+- **Definition**: Objects of a superclass should be replaceable with objects of a subclass without affecting the correctness of the program.
+- **Benefit**: Ensures that a subclass can stand in for its superclass, promoting the use of polymorphism and enhancing code reusability.
+
+## 4. Interface Segregation Principle (ISP)
+- **Definition**: No client should be forced to depend on methods it does not use. Interfaces should be specific to a client’s needs.
+- **Benefit**: Reduces the impact of changes and minimizes the number of dependencies in the code. Clients will only need to know about the methods that are relevant to them, leading to more focused and cohesive interfaces.
+
+## 5. Dependency Inversion Principle (DIP)
+- **Definition**: High-level modules should not depend on low-level modules. Both should depend on abstractions (e.g., interfaces). Abstractions should not depend on details; details should depend on abstractions.
+- **Benefit**: This principle promotes loose coupling and enhances code flexibility and testability by decoupling the high-level business logic from low-level implementation details.
+
+## Summary
+Adhering to the SOLID principles leads to a more robust and maintainable codebase, facilitating easier updates, modifications, and collaboration among developers. These principles can guide software design decisions, ultimately improving the quality of the software system.
+
+
+## Question- Details of all collections
+
+# Java Collections Overview
+
+Java Collections Framework provides various data structures to store, manipulate, and retrieve data. Here’s a detailed breakdown of the key properties, features, initial capacity, and load factor of the main collection types in Java.
+
+## 1. **List**
+### Properties:
+- **Ordered**: Maintains the order of insertion.
+- **Allows Duplicates**: Can store duplicate elements.
+  
+### Features:
+- Dynamic resizing of the underlying array.
+- Can be accessed via indices, allowing random access.
+  
+### Common Implementations:
+
+#### a. **ArrayList**
+- **Description**: Resizable array implementation of the List interface.
+- **Initial Capacity**: 10 (default).
+- **Load Factor**: Not applicable (resizes when the size exceeds the current capacity).
+- **Usage**: Suitable for storing a list of elements where frequent access by index is required.
+- **Performance**:
+  - **Get**: O(1)
+  - **Add**: O(1) (amortized)
+  - **Remove**: O(n)
+
+#### b. **LinkedList**
+- **Description**: Doubly-linked list implementation of the List interface.
+- **Initial Capacity**: Not defined; grows as needed.
+- **Load Factor**: Not applicable.
+- **Usage**: Suitable for applications where frequent insertion and deletion operations occur.
+- **Performance**:
+  - **Get**: O(n)
+  - **Add**: O(1)
+  - **Remove**: O(1)
+
+## 2. **Set**
+### Properties:
+- **Unordered**: Does not maintain any order.
+- **No Duplicates**: Cannot store duplicate elements.
+  
+### Features:
+- Uses hashing or tree structure for storage.
+  
+### Common Implementations:
+
+#### a. **HashSet**
+- **Description**: Hash table implementation of the Set interface.
+- **Initial Capacity**: 16 (default).
+- **Load Factor**: 0.75 (default).
+- **Usage**: Suitable for storing unique elements with no particular order.
+- **Performance**:
+  - **Add**: O(1) (amortized)
+  - **Contains**: O(1)
+  - **Remove**: O(1)
+
+#### b. **LinkedHashSet**
+- **Description**: Hash table with a linked list maintaining insertion order.
+- **Initial Capacity**: 16 (default).
+- **Load Factor**: 0.75 (default).
+- **Usage**: Suitable for storing unique elements while maintaining the order of insertion.
+- **Performance**:
+  - **Add**: O(1)
+  - **Contains**: O(1)
+  - **Remove**: O(1)
+
+#### c. **TreeSet**
+- **Description**: Navigable set implementation based on a Red-Black tree.
+- **Initial Capacity**: 10 (default).
+- **Load Factor**: Not applicable (does not use load factor).
+- **Usage**: Suitable for storing unique elements in sorted order.
+- **Performance**:
+  - **Add**: O(log n)
+  - **Contains**: O(log n)
+  - **Remove**: O(log n)
+
+## 3. **Queue**
+### Properties:
+- **Ordered**: Maintains the order of insertion.
+- **Allows Duplicates**: Can store duplicate elements.
+  
+### Features:
+- Follows FIFO (First In First Out) principle.
+  
+### Common Implementations:
+
+#### a. **LinkedList** (Also implements Queue)
+- **Description**: Doubly-linked list implementation of the Queue interface.
+- **Initial Capacity**: Not defined; grows as needed.
+- **Load Factor**: Not applicable.
+- **Usage**: Suitable for queue operations where insertion and deletion occur at both ends.
+- **Performance**:
+  - **Offer**: O(1)
+  - **Poll**: O(1)
+  - **Peek**: O(1)
+
+#### b. **PriorityQueue**
+- **Description**: Queue implementation where elements are ordered according to their natural ordering or by a specified comparator.
+- **Initial Capacity**: 11 (default).
+- **Load Factor**: Not applicable (uses a heap structure).
+- **Usage**: Suitable for scenarios where elements need to be processed based on priority rather than order of insertion.
+- **Performance**:
+  - **Add**: O(log n)
+  - **Remove**: O(log n)
+  - **Peek**: O(1)
+
+## 4. **Map**
+### Properties:
+- **Key-Value Pairs**: Stores data as key-value pairs.
+- **No Duplicate Keys**: Cannot have duplicate keys.
+  
+### Features:
+- Keys are unique, values can be duplicated.
+  
+### Common Implementations:
+
+#### a. **HashMap**
+- **Description**: Hash table implementation of the Map interface.
+- **Initial Capacity**: 16 (default).
+- **Load Factor**: 0.75 (default).
+- **Usage**: Suitable for fast key-value lookups.
+- **Performance**:
+  - **Put**: O(1) (amortized)
+  - **Get**: O(1)
+  - **Remove**: O(1)
+
+#### b. **LinkedHashMap**
+- **Description**: Hash table with a linked list maintaining insertion order.
+- **Initial Capacity**: 16 (default).
+- **Load Factor**: 0.75 (default).
+- **Usage**: Suitable for fast key-value lookups while maintaining insertion order.
+- **Performance**:
+  - **Put**: O(1)
+  - **Get**: O(1)
+  - **Remove**: O(1)
+
+#### c. **TreeMap**
+- **Description**: Navigable map implementation based on a Red-Black tree.
+- **Initial Capacity**: 10 (default).
+- **Load Factor**: Not applicable (does not use load factor).
+- **Usage**: Suitable for storing key-value pairs in sorted order by keys.
+- **Performance**:
+  - **Put**: O(log n)
+  - **Get**: O(log n)
+  - **Remove**: O(log n)
+
+#### d. **Hashtable**
+- **Description**: Legacy class for hash table implementation of the Map interface; synchronized.
+- **Initial Capacity**: 11 (default).
+- **Load Factor**: 0.75 (default).
+- **Usage**: Suitable for thread-safe operations but is generally slower than HashMap.
+- **Performance**:
+  - **Put**: O(1)
+  - **Get**: O(1)
+  - **Remove**: O(1)
+
+## Summary
+Each collection type has its own unique properties, features, initial capacity, and load factor, making them suitable for various use cases. Understanding these characteristics helps in selecting the right collection for a specific scenario.
+
+
+## Question- CRUD vs JPA repository
+# Difference between CRUD and JPA Repository
+
+## CRUD Operations
+- **Definition**: CRUD stands for Create, Read, Update, and Delete, which are the four basic operations for managing data in a database.
+- **Usage**: CRUD operations can be performed using SQL queries directly or through various frameworks and libraries that simplify data manipulation.
+- **Implementation**:
+  - Typically involves writing manual SQL queries or using ORM frameworks.
+  - Not tied to a specific framework; can be implemented in any programming language.
+
+## JPA Repository
+- **Definition**: JPA (Java Persistence API) Repository is a part of the Spring Data framework that provides an abstraction layer for performing CRUD operations on entities in a database.
+- **Usage**: JPA repositories offer built-in methods for common CRUD operations without the need for writing boilerplate code.
+- **Implementation**:
+  - Extends `JpaRepository` or `CrudRepository` interface provided by Spring Data JPA.
+  - Automatically generates SQL queries based on method names, reducing the need for manual query writing.
+
+## Key Differences
+| Feature                 | CRUD                                    | JPA Repository                           |
+|-------------------------|-----------------------------------------|-----------------------------------------|
+| Definition              | Basic operations for data manipulation  | Abstraction layer for data persistence  |
+| Manual vs Automatic      | Requires manual SQL queries             | Automatically generates queries          |
+| Framework Dependency     | Not dependent on a specific framework   | Part of Spring Data framework            |
+| Code Boilerplate        | More boilerplate code needed            | Reduces boilerplate with predefined methods |
+| Method Naming           | Custom method implementation             | Method names determine query behavior    |
+| Performance             | Direct control over SQL                 | May add some overhead due to abstraction |
+
+## Conclusion
+While CRUD is a set of operations applicable in any data management context, JPA Repository provides a higher-level abstraction specifically for Java applications, simplifying data access and management through automatic query generation.
+
+```java
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+    // Additional query methods can be defined here if needed
+}
+
+```
+
+
+## Question- Named query vs Native query
+### Named Query vs Native Query
+
+**Named Query:**
+- **Definition:** A predefined query defined using annotations (`@NamedQuery`) or XML. It is associated with an entity and can be reused.
+- **Usage:** Generally used for static queries that are defined at the compile-time and can be referenced by name.
+- **Example:**
+  ```java
+  @Entity
+  @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name")
+  public class User {
+      // fields, getters, setters
+  }
+
+  // Usage in a repository
+  List<User> users = entityManager.createNamedQuery("User.findByName", User.class)
+                                  .setParameter("name", "John")
+                                  .getResultList();
+  ```
+  
+**Native Query:**
+- **Definition:**  A query written in the native SQL dialect of the underlying database. It can leverage all database features.
+- **Usage:** Used when the required query cannot be expressed using JPQL or when you want to optimize performance with database-specific features.
+- **Example:**
+  
+
+```java
+List<User> users = entityManager.createNativeQuery("SELECT * FROM users WHERE name = ?", User.class)
+                                .setParameter(1, "John")
+                                .getResultList();
+```
+
+**Key Differences**
+**Flexibility**: Named queries are more limited to JPQL syntax, while native queries can use any SQL syntax supported by the database.
+**Performance**: Native queries may provide better performance for complex queries, while named queries are easier to manage and refactor.
+**Debugging**: Named queries can be easier to debug since they are defined in one place, whereas native queries are often embedded within the code.
+
+
+## Question- Named Query vs Native Query
+### Adding Pagination in Native Query
+
+To implement pagination in a native query, you can use the `setFirstResult()` and `setMaxResults()` methods of the `Query` interface. These methods allow you to specify the starting index and the maximum number of results to return.
+
+### Example Code
+
+Here's an example of how to add pagination to a native query in a Spring Data JPA repository:
+
+```java
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.List;
+
+@Repository
+public class UserRepository {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Transactional
+    public List<User> findUsersWithPagination(int page, int size) {
+        int offset = page * size; // Calculate the starting index
+        Query query = entityManager.createNativeQuery("SELECT * FROM users", User.class);
+        query.setFirstResult(offset);
+        query.setMaxResults(size);
+        return query.getResultList();
+    }
+}
+```
+
+**Parameters Passed from UI for Pagination**
+When implementing pagination in a UI, you typically pass the following parameters:
+
+Page Number: This indicates the current page the user is on. For example, if your pagination starts from 0, then the first page is 0, the second is 1, and so on.
+
+Example: page=1 (This usually means the second page if starting from 0).
+
+Page Size: This indicates how many items should be displayed per page.
+
+Example: size=10 (This means that 10 records will be displayed per page).
+
+Example UI Parameters
+When making a request to the API endpoint for fetching paginated data, the URL might look like this:
+**GET /api/users?page=1&size=10**
+
+
+
+## Question- Given employee table has columns name, age and dept. Get list of employees by name.
+### Named Query to Get List of All Employees by Name
+
+To define a named query in JPA for retrieving all employees by their name, you can follow these steps:
+
+1. **Define the Named Query in the Entity Class**: Annotate the `Employee` entity with the `@NamedQuery` annotation.
+
+2. **Use the Named Query in the Repository**: Create a method in your repository to execute the named query.
+
+### Example Code
+
+#### Employee Entity with Named Query
+
+```java
+import javax.persistence.*;
+
+@Entity
+@NamedQueries({
+    @NamedQuery(
+        name = "Employee.findByName",
+        query = "SELECT e FROM Employee e WHERE e.name = :name"
+    )
+})
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private int age;
+    private String department;
+
+    // Getters and Setters
+}
+
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+    List<Employee> findByName(String name);
+}
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class EmployeeService {
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    public List<Employee> getEmployeesByName(String name) {
+        return employeeRepository.findByName(name);
+    }
+}
+
+
+List<Employee> employees = employeeService.getEmployeesByName("John Doe");
+
+```
+
+
