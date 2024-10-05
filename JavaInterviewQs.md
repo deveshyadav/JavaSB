@@ -922,4 +922,328 @@ WHERE salary = (
 );
 ```
 
+**Question:- Implement a rate limiter to limit number of requests made to an endpoint.**
 
+# Rate Limiter Setup and Working
+
+In this example, you are using **Bucket4j**, a token-bucket-based library, to implement rate limiting. Here's how the rate limiter works in conjunction with the Employee API. 
+
+[GitHub link for code](https://github.com/deveshyadav/interview_prep/tree/master)
+
+## Token Bucket Concept:
+
+- A bucket holds tokens. Each API request consumes one token.
+- When a request comes in, the rate limiter checks if there are tokens available in the bucket.
+- If a token is available, it is consumed, and the request is allowed.
+- If no token is available, the request is denied, and the user gets an HTTP 429 **Too Many Requests** error.
+- Tokens refill into the bucket at a set rate, allowing requests again after a period.
+
+## Rate Limiter Configuration:
+
+- The rate limiter is set up in the `RateLimiterService` class using Bucket4j's API.
+- You configure how many requests are allowed per time period. For example:
+  - **20 requests per minute**: The bucket starts with 20 tokens and refills at a rate of 20 tokens every minute.
+
+## Working Flow (Step-by-Step):
+
+### Client Sends Request:
+
+- A client (Postman, browser, etc.) sends a request to the `GET /employee/{id}` API.
+
+### Rate Limiter Checks the Token Bucket:
+
+- The `RateLimiterService.isRequestAllowed()` method is called when the request is received.
+- Inside this method, the Bucket (configured with 20 tokens and refilling 20 tokens per minute) checks if there's a token available for this request.
+  - **If token is available**: The token is consumed, and the request is processed.
+  - **If no token is available**: The request is rejected, and a **429 Too Many Requests** response is sent.
+
+### Processing the Request (If Allowed):
+
+- If the request is allowed, the `EmployeeService` fetches the employee information based on the `id` parameter.
+- The API returns the employee details in the response with a **200 OK** status.
+
+### Rejecting the Request (If Rate Limited):
+
+- If no token is available (because the rate limit has been exceeded), the response is set to **429 Too Many Requests**.
+- No further processing occurs, and the client is informed to retry later.
+
+
+
+**Question- Java memory working in case of object creation**
+
+# Java Memory Management
+
+## 1. Memory Areas in Java
+Java memory is divided into several areas:
+
+- **Heap Memory**: This is where all Java objects and arrays are allocated. The heap is created when the Java Virtual Machine (JVM) starts and can grow and shrink as needed. The memory for objects is allocated on the heap when you create an object using the `new` keyword.
+
+- **Stack Memory**: Each thread in Java has its own stack, which is used to store local variables and method call frames. When a method is called, a new frame is pushed onto the stack containing parameters and local variables, including references to objects. When the method exits, the frame is popped from the stack.
+
+- **Method Area**: This is a part of the heap memory where class structures (like metadata, constant pool, and field and method data) are stored. It holds the class definitions and is shared among all threads.
+
+- **Native Method Stack**: This is similar to the stack but is used for native (non-Java) methods.
+
+## 2. Object Creation Process
+When you create an object in Java, the following steps occur:
+
+### a. Memory Allocation
+- **Using the `new` Keyword**: When you create an object using the `new` keyword, the JVM allocates memory for the object in the heap.
+
+```java
+MyObject obj = new MyObject();
+```
+## Memory Size
+The amount of memory allocated depends on the object’s class and its instance variables.
+
+### b. Constructor Invocation
+After memory allocation, the constructor of the class is invoked to initialize the object. The constructor can also set initial values for the object’s fields.
+
+### c. Object Reference
+A reference to the newly created object is returned. In the example above, `obj` holds a reference to the memory location of the object.
+
+### d. Garbage Collection
+When an object is no longer referenced (i.e., there are no more references pointing to it), it becomes eligible for garbage collection. The JVM automatically reclaims memory used by objects that are no longer in use. This helps manage memory and prevent memory leaks.
+
+## 3. Memory Management Mechanisms
+- **Garbage Collection**: Java uses a garbage collection mechanism to automatically manage memory. This process identifies and disposes of objects that are no longer referenced, freeing up memory.
+
+- **Generational Garbage Collection**: Java employs a generational garbage collection strategy where the heap is divided into generations (young, old, and permanent). New objects are allocated in the young generation, and as they survive garbage collection cycles, they are moved to older generations.
+
+- **Finalization**: Before an object is garbage collected, the JVM can call its `finalize()` method (if it exists) to allow the object to release resources.
+
+
+
+**Question- Java memory working in case of String literals and objects**
+# Memory Utilization of Strings in Java
+
+## 1. String Creation
+- **String Literal**: 
+  - Created with `String s = "Hello";` 
+  - Stored in the **String Pool**, which allows reusing existing instances for the same literals.
+  
+- **String Object**: 
+  - Created with `new String("Hello");` 
+  - Allocates a new object in heap memory, bypassing the String Pool.
+
+## 2. Memory Overhead
+- Each string object has a header and consumes memory as follows:
+  \[
+  \text{Memory Used} = 24 + 2 \times n
+  \]
+  where \(n\) is the number of characters. The overhead is due to object metadata.
+
+## 3. Immutability
+- Strings are immutable. Modifying a string creates a new object, leading to increased memory usage. 
+  - For example:
+    ```java
+    String s = "Hello";
+    s += " World"; // Creates a new string object
+    ```
+
+## 4. Memory Management
+- Java uses garbage collection to reclaim memory from unreferenced string objects. Frequent string modifications can trigger more garbage collection cycles.
+
+## 5. Using StringBuilder/StringBuffer
+- For frequent modifications, use `StringBuilder` or `StringBuffer`:
+  ```java
+  StringBuilder sb = new StringBuilder("Hello");
+  sb.append(" World");
+
+  ```
+  
+
+
+  **Question**
+# Serialization vs. Deserialization
+
+## Serialization
+- **Definition**: The process of converting an object into a byte stream.
+- **Purpose**: To save the state of an object to a file or transmit it over a network.
+- **Use Cases**: Storing objects in files, sending objects between systems, caching objects.
+- **Example**:
+    ```java
+    ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("file.ser"));
+    out.writeObject(object);
+    out.close();
+    ```
+
+## Deserialization
+- **Definition**: The process of converting a byte stream back into an object.
+- **Purpose**: To reconstruct an object from its saved state.
+- **Use Cases**: Retrieving objects from files, receiving objects over a network, restoring application state.
+- **Example**:
+    ```java
+    ObjectInputStream in = new ObjectInputStream(new FileInputStream("file.ser"));
+    MyObject object = (MyObject) in.readObject();
+    in.close();
+    ```
+
+## Summary
+- **Serialization**: Object → Byte Stream
+- **Deserialization**: Byte Stream → Object
+
+
+# Question- Integrating SonarQube with a Java Spring Boot Project
+
+## Prerequisites
+- **SonarQube Server**: Ensure that you have a running SonarQube server.
+- **SonarQube Scanner**: Install SonarQube Scanner on your local machine or CI/CD pipeline.
+
+## Steps to Integrate
+
+### 1. Add SonarQube Dependency
+Add the SonarQube plugin in your `pom.xml` file for Maven projects:
+
+```xml
+<properties>
+    <sonar.version>your-sonar-version</sonar.version>
+</properties>
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>${sonar.version}</version>
+        </plugin>
+    </plugins>
+</build>
+```
+
+
+ **Properties**
+
+sonar.projectKey=your-project-key
+sonar.projectName=Your Project Name
+sonar.projectVersion=1.0
+sonar.sources=src/main/java
+sonar.tests=src/test/java
+sonar.java.binaries=target/classes
+
+
+
+# Question- ECS Deployment Process
+
+## Overview
+Amazon ECS is a fully managed container orchestration service that helps deploy and manage Docker containers. The deployment process involves several key steps.
+
+## Steps to Deploy on ECS
+
+### 1. **Create a Docker Image**
+- Build your application as a Docker container.
+- Use a Dockerfile to define the environment and application dependencies.
+- Build the Docker image using the command:
+    ```bash
+    docker build -t your-image-name .
+    ```
+
+### 2. **Push Docker Image to Amazon ECR**
+- Create an Amazon ECR (Elastic Container Registry) repository to store your Docker images.
+- Authenticate Docker to your ECR:
+    ```bash
+    aws ecr get-login-password --region your-region | docker login --username AWS --password-stdin your-account-id.dkr.ecr.your-region.amazonaws.com
+    ```
+- Tag your image and push it to ECR:
+    ```bash
+    docker tag your-image-name:latest your-account-id.dkr.ecr.your-region.amazonaws.com/your-repo-name:latest
+    docker push your-account-id.dkr.ecr.your-region.amazonaws.com/your-repo-name:latest
+    ```
+
+### 3. **Create ECS Cluster**
+- Go to the ECS console and create a new cluster (EC2 or Fargate).
+- Configure cluster settings based on your requirements.
+
+### 4. **Define a Task Definition**
+- Create a task definition that specifies:
+  - The Docker image to use.
+  - CPU and memory requirements.
+  - Networking mode and port mappings.
+  - Environment variables and IAM roles.
+
+### 5. **Deploy the Service**
+- Create a new service in your ECS cluster using the task definition.
+- Choose the desired number of tasks to run and deployment options (e.g., rolling updates).
+- Select the load balancer if needed (for web applications).
+
+### 6. **Monitor and Manage**
+- Use the ECS console to monitor the status of your tasks and services.
+- Update the service with a new task definition version to deploy updates.
+
+## Summary
+Deploying on Amazon ECS involves creating a Docker image, pushing it to ECR, defining a task, and creating a service to manage the containers. ECS automates scaling, load balancing, and orchestration.
+
+
+
+
+# Question- Handling Security Vulnerabilities with Black Duck
+
+## Overview
+Black Duck is an open-source management tool that helps identify security vulnerabilities in your code and dependencies. It scans your project and provides detailed insights into potential risks.
+
+## Steps for Handling Vulnerabilities
+
+### 1. **Integration**
+- Integrate Black Duck into your CI/CD pipeline to automate scanning.
+- Black Duck supports various build tools and environments (e.g., Maven, Gradle, Jenkins).
+
+### 2. **Code Scanning**
+- Run a Black Duck scan on your project to analyze the codebase and its dependencies.
+- The scan identifies open-source components and versions in use.
+
+### 3. **Vulnerability Detection**
+- Black Duck checks the identified components against its comprehensive vulnerability database.
+- It identifies known vulnerabilities (CVEs) and provides severity ratings.
+
+### 4. **Reporting**
+- After the scan, Black Duck generates detailed reports highlighting:
+  - Vulnerable components.
+  - Severity levels.
+  - Recommendations for remediation (upgrades, patches).
+
+### 5. **Remediation**
+- Review the report and prioritize vulnerabilities based on severity and potential impact.
+- Update or replace vulnerable components to mitigate risks.
+- Implement security patches as recommended.
+
+### 6. **Continuous Monitoring**
+- Set up Black Duck for continuous monitoring to detect new vulnerabilities in real-time.
+- Reg
+
+
+# Question- How Spring Scheduler Works
+
+## Overview
+Spring Scheduler is part of the Spring Framework that provides a simple way to schedule tasks to be executed at specified intervals or at specific times.
+
+## Key Components
+
+### 1. Task Scheduling Annotations
+Spring provides annotations to define scheduled tasks:
+- **`@Scheduled`**: Indicates that a method should be scheduled for execution. It can take parameters to define the schedule.
+  
+  **Example**:
+  ```java
+  @Scheduled(fixedRate = 5000)
+  public void performTask() {
+      // Task to be executed
+  }
+
+
+**3. Scheduled Task Example**
+
+Here’s an example of a simple scheduled task that runs every 5 seconds.
+
+```java
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyScheduledTask {
+
+    @Scheduled(fixedRate = 5000)
+    public void executeTask() {
+        System.out.println("Task executed at: " + System.currentTimeMillis());
+    }
+}
+```
