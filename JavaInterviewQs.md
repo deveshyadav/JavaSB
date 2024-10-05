@@ -1229,8 +1229,17 @@ Spring provides annotations to define scheduled tasks:
       // Task to be executed
   }
 
+## 2. Scheduling Configuration
+To enable scheduling, you need to annotate your configuration class with @EnableScheduling.
 
-**3. Scheduled Task Example**
+```java
+@Configuration
+@EnableScheduling
+public class AppConfig {
+}
+```
+
+## 3. Scheduled Task Example
 
 Here’s an example of a simple scheduled task that runs every 5 seconds.
 
@@ -1247,3 +1256,769 @@ public class MyScheduledTask {
     }
 }
 ```
+
+## 4. Types of Scheduling
+Fixed Rate: The task is executed at a fixed interval. If the task execution takes longer than the interval, the next execution will wait until the current task finishes.
+
+Fixed Delay: The task is executed after a fixed delay from the completion of the last execution.
+
+Cron Expressions: For more complex scheduling, you can use cron expressions to specify exact times and dates for task execution.
+
+```java
+
+@Scheduled(cron = "0 0/1 * * * ?") // Every minute
+public void executeCronTask() {
+    System.out.println("Cron task executed at: " + System.currentTimeMillis());
+}
+```
+
+## 5. Thread Pool
+By default, Spring uses a simple thread pool to manage scheduled tasks. You can customize the thread pool by defining a TaskScheduler bean.
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+
+@Bean
+public ThreadPoolTaskScheduler taskScheduler() {
+    ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+    scheduler.setPoolSize(5); // Set the number of threads
+    return scheduler;
+}
+```
+
+## Question- How to set different config for different environments
+
+src/main/resources/
+├── application.properties        # Default properties
+├── application-dev.properties    # Development properties
+├── application-staging.properties # Staging properties
+└── application-prod.properties    # Production properties
+
+**Setting active profile**
+export SPRING_PROFILES_ACTIVE=dev
+
+## Question - Save vs Flush in hibernate
+## Save vs Flush in Hibernate
+
+### Save
+- **Purpose**: The `save()` method is used to persist an entity in the database.
+- **Behavior**: It assigns a generated identifier to the entity and schedules it for insertion in the database.
+- **Transaction Management**: The actual database operation occurs when the transaction is committed.
+- **Return Value**: Returns the identifier of the saved entity.
+
+### Flush
+- **Purpose**: The `flush()` method is used to synchronize the Hibernate session with the database.
+- **Behavior**: It forces the Hibernate Session to execute all pending SQL statements to the database.
+- **Timing**: It does not commit the transaction; it only ensures that the changes made are reflected in the database.
+- **Return Value**: Does not return any value.
+
+### Key Differences
+- `save()` is about persisting an entity, while `flush()` is about synchronizing the session state with the database.
+- `save()` may not immediately execute any SQL, while `flush()` ensures that all pending operations are executed.
+
+
+## Question- Working of @Transactional in Spring
+
+### Overview
+The `@Transactional` annotation in Spring is used to manage transactions declaratively. It ensures that a series of operations are executed in a single transaction context, providing ACID (Atomicity, Consistency, Isolation, Durability) properties.
+
+### How It Works
+
+1. **Annotation Placement**:
+   - Can be placed at the class level or method level.
+   - If placed on a class, it applies to all public methods within that class.
+
+2. **Proxy Creation**:
+   - When a bean with the `@Transactional` annotation is created, Spring creates a proxy around the bean.
+   - The proxy intercepts method calls and applies transaction management logic.
+
+3. **Transaction Management**:
+   - When a method annotated with `@Transactional` is called:
+     - Spring starts a new transaction or joins an existing one based on the propagation settings.
+     - All database operations within the method are executed.
+
+4. **Commit or Rollback**:
+   - If the method completes successfully, the transaction is committed.
+   - If an unchecked exception (runtime exception) is thrown, the transaction is rolled back.
+   - Checked exceptions can be configured to trigger a rollback based on settings.
+
+5. **Isolation Levels**:
+   - The `@Transactional` annotation allows you to specify the isolation level of the transaction, which controls the visibility of changes made by other transactions.
+
+6. **Timeout**:
+   - You can define a timeout for the transaction, after which it will be rolled back if not completed.
+
+### Example
+```java
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class UserService {
+
+    @Transactional
+    public void registerUser(User user) {
+        // Perform database operations
+        userRepository.save(user);
+        // Other operations
+    }
+}
+```
+
+## Question- Different Caches in Hibernate
+
+Hibernate provides a caching mechanism to enhance performance by reducing database access. There are two main levels of caching in Hibernate:
+
+### 1. First-Level Cache (Session Cache)
+- **Scope**: It is associated with the `Session` object.
+- **Lifetime**: It lasts until the session is closed.
+- **Usage**: Whenever you load an entity, Hibernate checks the first-level cache. If the entity is already present in the cache, it retrieves it from there instead of querying the database.
+- **Eviction**: The first-level cache is automatically cleared when the session is closed.
+
+### 2. Second-Level Cache
+- **Scope**: It is associated with the `SessionFactory` and can be shared across multiple sessions.
+- **Lifetime**: It lasts as long as the `SessionFactory` is open.
+- **Configuration**: Must be explicitly enabled in the Hibernate configuration.
+- **Providers**: Supports various cache providers (e.g., EHCache, Infinispan, Hazelcast, etc.).
+- **Usage**: Useful for caching entities, collections, and queries, reducing database calls for frequently accessed data.
+
+### 3. Query Cache
+- **Scope**: This is an optional cache that caches the results of specific queries.
+- **Usage**: When enabled, Hibernate caches the results of a query and uses it for subsequent executions if the underlying data has not changed.
+- **Dependencies**: The query cache relies on the second-level cache and must be enabled for it to work.
+
+### Key Points
+- **Caching Strategy**: You can define caching strategies (e.g., read-only, read-write, nonstrict-read-write, etc.) for entities and collections to optimize performance.
+- **Configuration**: Caching settings can be specified in the Hibernate configuration files or annotations on entity classes.
+
+### Example
+To enable the second-level cache with annotations:
+```java
+@Entity
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Product {
+    // ...
+}
+```
+
+
+### Question- Writing native queries in JPA
+
+## Writing Native Queries in JPA
+
+In Java Persistence API (JPA), native queries are SQL queries that are executed directly against the database. They provide a way to perform operations that are not possible using JPQL (Java Persistence Query Language) or Criteria API. Here's how to write and use native queries in JPA.
+
+### 1. Using `@Query` Annotation
+
+You can use the `@Query` annotation in your repository interface to define a native query. 
+
+#### Example:
+
+```java
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProductRepository extends CrudRepository<Product, Long> {
+
+    @Query(value = "SELECT * FROM products WHERE price > ?1", nativeQuery = true)
+    List<Product> findProductsAbovePrice(double price);
+}
+```
+
+## 2. Using EntityManager
+You can also execute native queries using the EntityManager interface.
+
+```java
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.List;
+
+public class ProductService {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    public List<Product> getProductsAbovePrice(double price) {
+        String sql = "SELECT * FROM products WHERE price > :price";
+        Query query = entityManager.createNativeQuery(sql, Product.class);
+        query.setParameter("price", price);
+        return query.getResultList();
+    }
+}
+```
+## 3. Named Native Queries
+You can define named native queries in your entity class using the @NamedNativeQuery annotation.
+
+```java
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.NamedNativeQuery;
+
+@Entity
+@NamedNativeQuery(
+    name = "Product.findAbovePrice",
+    query = "SELECT * FROM products WHERE price > :price",
+    resultClass = Product.class
+)
+public class Product {
+    @Id
+    private Long id;
+    private String name;
+    private double price;
+
+    // Getters and Setters
+}
+
+//Can use the named queries like this in repository
+
+import org.springframework.stereotype.Repository;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.List;
+
+@Repository
+public class ProductRepository {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    public List<Product> findProductsAbovePrice(double price) {
+        Query query = entityManager.createNamedQuery("Product.findAbovePrice");
+        query.setParameter("price", price);
+        return query.getResultList();
+    }
+}
+
+```
+
+## Question- How to implement pagination in JPA
+
+## Pagination in JPA
+
+Pagination in Java Persistence API (JPA) allows you to retrieve large datasets in smaller, manageable chunks. This is especially useful for improving performance and user experience when dealing with large amounts of data. Here’s how pagination works in JPA:
+
+### 1. Using the `Pageable` Interface
+
+Spring Data JPA provides a `Pageable` interface, which helps manage pagination details like the page number, size, and sorting.
+
+#### Example:
+
+```java
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    Page<Product> findAll(Pageable pageable);
+}
+```
+
+### 2. Using PageRequest
+You can create a PageRequest object to specify the page number and size.
+
+```java
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ProductService {
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    public Page<Product> getProducts(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return productRepository.findAll(pageRequest);
+    }
+}
+
+
+//Then accessing results like this
+/*getContent(): Returns the content of the current page.
+getTotalPages(): Returns the total number of pages.
+getTotalElements(): Returns the total number of elements across all pages.
+hasNext(): Checks if there is a next page.
+hasPrevious(): Checks if there is a previous page.
+*/
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class ProductController {
+
+    @Autowired
+    private ProductService productService;
+
+    @GetMapping("/products")
+    public Page<Product> getProducts(@RequestParam int page, @RequestParam int size) {
+        return productService.getProducts(page, size);
+    }
+}
+
+```
+
+
+### 3. Custom Queries with Pagination
+You can also use pagination with custom queries defined using the @Query annotation.
+
+```java
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
+
+public interface CustomProductRepository extends PagingAndSortingRepository<Product, Long> {
+
+    @Query("SELECT p FROM Product p WHERE p.price > ?1")
+    Page<Product> findByPriceGreaterThan(double price, Pageable pageable);
+}
+
+```
+
+
+## Question-  Embedding Composite Keys in Entity
+
+A composite key is a combination of multiple columns that uniquely identify a row in a database table. When you want to use a composite key as the primary key for an entity in your application, you need to ensure that the entity correctly represents and manages this composite key.
+
+### Steps to Embed Composite Keys:
+
+1. **Define the Composite Key Columns:**
+   - Identify the columns that together form the composite key. These columns should be non-nullable and unique for each row.
+   - Define corresponding properties in your entity class, using appropriate data types.
+
+2. **Create a Composite Key Class:**
+   - If the composite key is complex or frequently used, consider creating a separate class to represent it. This can improve code readability and maintainability.
+   - The composite key class should contain properties for each column of the composite key.
+
+3. **Annotate the Composite Key:**
+   - Use the appropriate annotation provided by your ORM framework to mark the composite key class or properties as a composite key.
+   - For example, in JPA, you would use the `@Embeddable` annotation for the composite key class and the `@EmbeddedId` annotation for the property referencing the composite key.
+
+4. **Set the Composite Key as the Primary Key:**
+   - Annotate the property or field in your entity class that references the composite key with the appropriate annotation to indicate that it is the primary key.
+   - For example, in JPA, you would use the `@Id` annotation.
+
+### Example (JPA):
+
+```java
+@Embeddable
+public class CompositeKey {
+    @Column(name = "column1")
+    private String column1;
+
+    @Column(name = "column2")
+    private int column2;
+
+    // Getters and setters
+}
+
+@Entity
+public class MyEntity {
+    @EmbeddedId
+    private CompositeKey id;
+
+    // Other properties
+}
+
+```
+
+## Question- How to handle fault tolerance in microservices
+## How to Handle Fault Tolerance in Microservices
+
+Fault tolerance in microservices is crucial to maintain the availability and reliability of distributed systems. Various strategies and tools can be used to handle failures effectively. Below are some common patterns and methods to ensure fault tolerance in microservices architecture:
+
+### 1. **Circuit Breaker Pattern**
+The **Circuit Breaker Pattern** prevents cascading failures in a microservices architecture by stopping attempts to invoke a failing service after a certain threshold of failures is reached.
+
+- **Closed State**: Requests are sent normally to the service.
+- **Open State**: If the service fails repeatedly, the circuit opens, and no more requests are sent until the service is healthy.
+- **Half-Open State**: After a cooldown period, a limited number of requests are allowed to see if the service has recovered.
+
+#### Example Using Resilience4j (Spring Boot):
+```java
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class FaultTolerantService {
+
+    @GetMapping("/getData")
+    @CircuitBreaker(name = "myService", fallbackMethod = "fallback")
+    public String getData() {
+        // Call to another microservice
+    }
+
+    public String fallback(Throwable t) {
+        return "Fallback response";
+    }
+}
+```
+
+## 2. Retry Pattern
+In cases of transient failures, the Retry Pattern automatically retries the failed request a specified number of times before giving up. This is useful when failures may resolve themselves after a short period.
+
+```java
+import org.springframework.retry.annotation.Retryable;
+import org.springframework.stereotype.Service;
+
+@Service
+public class RetryService {
+
+    @Retryable(maxAttempts = 3)
+    public String fetchData() {
+        // Logic to fetch data, retry in case of failure
+    }
+}
+
+```
+
+## 3. Timeouts
+Implementing timeouts prevents the application from waiting indefinitely for a response from a failing service. By setting a timeout, the application can move on to another task or fail gracefully.
+
+Example Using Feign Client:
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        
+## 4. Bulkhead Pattern
+The Bulkhead Pattern isolates different parts of the system so that failures in one microservice do not cause failures in others. It is analogous to partitioning a ship into separate sections so that flooding in one section doesn’t sink the entire ship.
+
+Allocate separate thread pools or resource quotas for different services.
+Example:
+Service A and Service B are allocated separate thread pools to avoid resource exhaustion when Service A fails.
+
+## 5. Fallback Pattern
+The Fallback Pattern provides an alternative response when a service is down. This can be a default value, a cached response, or a graceful degradation of service.
+
+Example Using Resilience4j:
+```java
+@CircuitBreaker(name = "myService", fallbackMethod = "fallback")
+public String getData() {
+    // Call to another microservice
+}
+
+public String fallback(Throwable t) {
+    return "Default Fallback Data";
+}
+```
+
+## 6. Health Monitoring and Alerts
+Implementing health checks for microservices and setting up monitoring tools (like Prometheus, Grafana) can help detect and react to failures in real-time.
+
+Health Check Endpoints: Expose /health or /actuator/health endpoints for monitoring service status.
+Alerting: Trigger alerts when failures or latency increases occur.
+
+## 7. Service Mesh
+Using service meshes (like Istio or Linkerd) adds an additional layer for managing microservices communication, load balancing, and fault tolerance. It abstracts away much of the retry, timeout, and circuit breaker logic from the application.
+
+
+
+
+## Question- Transaction management in microservices
+## Transaction Management in Microservices
+
+In microservices architecture, managing transactions across services can be challenging due to their distributed nature. Traditional ACID transactions (Atomicity, Consistency, Isolation, Durability) are difficult to achieve across multiple services. To handle transactions in microservices, alternative approaches are used to ensure **eventual consistency** while maintaining reliability.
+
+### 1. **Two-Phase Commit (2PC)**
+The **Two-Phase Commit (2PC)** protocol is a distributed algorithm that coordinates a global transaction across multiple services.
+
+- **Phase 1 (Prepare)**: The coordinator asks each service (participant) to prepare for the transaction.
+- **Phase 2 (Commit/Rollback)**: If all participants are prepared, the coordinator sends a commit message. If any participant fails, a rollback is triggered.
+
+While 2PC ensures atomicity, it is rarely used in microservices due to its **performance bottlenecks** and the risk of **blocking resources** during the commit phase.
+
+### 2. **Saga Pattern**
+The **Saga Pattern** is a widely-used approach for managing transactions in microservices by breaking a long-running transaction into smaller, local transactions.
+
+- Each service involved in the transaction performs a local commit.
+- If one transaction fails, compensating transactions are executed to undo the preceding operations.
+
+#### Types of Saga Patterns:
+- **Choreography**: Each service reacts to events and triggers the next action.
+- **Orchestration**: A central orchestrator service manages the flow of transactions and sends commands to other services.
+
+#### Example of Choreography-Based Saga:
+```java
+// Example: Order service creates an order
+public void createOrder() {
+    // Local transaction
+    orderRepository.save(order);
+
+    // Publish an event to trigger other services
+    eventPublisher.publish(new OrderCreatedEvent(order));
+}
+```
+
+## 3. Eventual Consistency
+In a distributed system, eventual consistency ensures that, while not immediately consistent, the system will become consistent over time. This is achieved by:
+
+Event-Driven Architecture: Services communicate through events, allowing them to operate asynchronously and independently. Failures are handled by retry mechanisms and error handling.
+Message Queues: Systems like Kafka or RabbitMQ can be used to decouple services and ensure reliable delivery of events, supporting eventual consistency.
+
+## 4. Outbox Pattern
+The Outbox Pattern ensures reliable event publishing along with local transactions. A service first writes both the event and the state change to the same local database. A separate service or mechanism then reads the event from the outbox and publishes it to other services.
+
+Example Flow:
+Step 1: Write the transaction data and event into the local database.
+Step 2: A polling process reads the outbox table and publishes the event.
+
+## 5. Compensating Transactions
+In case of failure, compensating transactions are executed to undo the effects of previous transactions, ensuring the system reaches a consistent state. This is a crucial aspect of the Saga Pattern and is essential in a microservices environment where distributed transactions can't be rolled back easily.
+
+## 6. Distributed Transactions with Spring Boot
+In Spring-based microservices, distributed transactions are managed by external frameworks such as Atomikos or Narayana, but most often, microservices adopt Saga or event-driven approaches due to their scalability.
+
+Example Saga Orchestration with Spring:
+```java
+@Service
+public class OrderSagaOrchestrator {
+
+    @Autowired
+    private PaymentService paymentService;
+
+    @Transactional
+    public void placeOrder(Order order) {
+        // Local transaction
+        orderRepository.save(order);
+
+        // Call other microservices in sequence
+        paymentService.processPayment(order);
+        shippingService.shipOrder(order);
+    }
+}
+
+```
+
+
+## Question- Global exception Springboot
+## Global Exception Handling in Spring Boot
+
+In Spring Boot, global exception handling can be managed using the `@ControllerAdvice` annotation, which allows you to handle exceptions across the entire application in one global location.
+
+### Example of Global Exception Handling
+
+Here’s an example of how to implement global exception handling in a Spring Boot application:
+
+```java
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    // Handle specific exception
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails(ex.getMessage(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
+    // Handle generic exceptions
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> handleGlobalException(Exception ex, WebRequest request) {
+        ErrorDetails errorDetails = new ErrorDetails("Internal Server Error", request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+
+
+public class ErrorDetails {
+
+    private String message;
+    private String details;
+
+    public ErrorDetails(String message, String details) {
+        this.message = message;
+        this.details = details;
+    }
+
+    // Getters and setters
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+}
+
+
+public class ResourceNotFoundException extends RuntimeException {
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+}
+
+
+
+```
+
+
+
+## Question- JPA vs SpringData vs Hibernate
+
+## JPA, Spring Data, and Hibernate
+
+### 1. **JPA (Java Persistence API)**:
+- **Definition**: JPA is a specification provided by Java for managing relational data in applications using Java objects. It defines a set of rules and guidelines for Object-Relational Mapping (ORM).
+- **Purpose**: JPA allows you to map Java classes to database tables and perform CRUD operations. It is not a framework but an abstraction that ORM tools like Hibernate can implement.
+- **Key Features**:
+  - Annotations such as `@Entity`, `@Id`, `@Table`, etc., are used to map Java objects to relational tables.
+  - Supports JPQL (Java Persistence Query Language) for querying databases.
+  - Does not provide actual implementation; it needs a provider like Hibernate to work.
+
+### 2. **Spring Data JPA**:
+- **Definition**: Spring Data JPA is a part of the larger Spring Data project. It simplifies data access by providing a higher-level abstraction over JPA.
+- **Purpose**: It eliminates the need for boilerplate code by using repository patterns, making database access operations more manageable.
+- **Key Features**:
+  - Provides `CrudRepository` and `JpaRepository` interfaces for CRUD operations.
+  - Auto-generates queries based on method names using conventions like `findByName`, `deleteById`, etc.
+  - Allows for the customization of queries using JPQL, SQL, and even the Criteria API.
+  
+```java
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+    List<Employee> findByLastName(String lastName);
+}
+```
+
+## 3. Hibernate:
+Definition: Hibernate is a widely-used ORM framework that implements JPA. It is a full-fledged framework for managing database operations with Java objects.
+Purpose: Hibernate allows for advanced ORM functionalities and provides additional features over JPA. It supports a wide range of databases and simplifies complex data management tasks.
+Key Features:
+Lazy/Eager fetching strategies to load data on-demand.
+Caching mechanisms for optimizing database access (First-Level Cache, Second-Level Cache).
+Supports complex queries, joins, and mapping configurations.
+Provides session management and transaction handling.
+
+
+Relationship:
+JPA: Defines the standard for ORM.
+Hibernate: A framework that implements the JPA specification and adds additional features.
+Spring Data JPA: Provides a simplified and higher abstraction over JPA, reducing the need for boilerplate code in a Spring-based application.
+
+```java
+## Example of Code Using JPA with Hibernate
+
+Here’s a basic example of how you can use JPA with Hibernate in a Spring Boot project to interact with a database.
+
+### 1. **Entity Class**
+
+The entity class represents a table in the database.
+
+```java
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+
+    // Constructors, getters, and setters
+    public Employee() {}
+
+    public Employee(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
+    // Getters and Setters
+}
+
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+    // Custom query methods if needed
+    List<Employee> findByLastName(String lastName);
+}
+
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+    // Custom query methods if needed
+    List<Employee> findByLastName(String lastName);
+}
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/employees")
+public class EmployeeController {
+
+    @Autowired
+    private EmployeeService employeeService;
+
+    @GetMapping
+    public List<Employee> getAllEmployees() {
+        return employeeService.getAllEmployees();
+    }
+
+    @GetMapping("/{id}")
+    public Employee getEmployeeById(@PathVariable Long id) {
+        return employeeService.getEmployeeById(id);
+    }
+
+    @PostMapping
+    public Employee createEmployee(@RequestBody Employee employee) {
+        return employeeService.saveEmployee(employee);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteEmployee(@PathVariable Long id) {
+        employeeService.deleteEmployee(id);
+    }
+}
+
+spring.datasource.url=jdbc:mysql://localhost:3306/employeedb
+spring.datasource.username=root
+spring.datasource.password=root
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+```
+
+
