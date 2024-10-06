@@ -4545,3 +4545,51 @@ When a producer sends messages to a Kafka topic, it must determine which partiti
 
 Understanding how partitioning works in Kafka is crucial for designing effective messaging systems that leverage Kafka’s capabilities for high throughput and reliability.
 
+
+## Question- SHow basic auth vs oauth2 implementation
+### Git repo with code
+https://github.com/deveshyadav/spring_security
+
+### Basic Authentication: 
+Requires a username and password that are either stored in memory or retrieved from a database, and then compared for authentication.
+### OAuth2 Authentication: 
+This enables login using an external OAuth2 provider (like Google, GitHub, etc.), handling the OAuth2 authorization flow.
+Example of Basic Auth with OAuth2
+Here's the basic difference using OAuth2 and Basic Auth:
+
+```java
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .csrf().disable()
+        .authorizeHttpRequests(authz -> authz
+            .requestMatchers("/api/public").permitAll()     // Public endpoint
+            .requestMatchers("/api/admin").hasRole("ADMIN") // Admin-only endpoint
+            .anyRequest().authenticated()
+        )
+        .oauth2Login()   // Enables OAuth2 Login
+        .and()
+        .httpBasic();    // Enables Basic Auth
+    return http.build();
+}
+```
+Breakdown:
+.httpBasic(): This enables Basic Authentication, allowing users to authenticate using a username and password.
+.oauth2Login(): This enables OAuth2-based authentication, where users can log in using an external OAuth2 provider (like Google, GitHub, etc.).
+You can combine both methods in the same security configuration, allowing some endpoints to use Basic Auth and others to use OAuth2, based on your application’s needs.
+
+### What Happens Internally?
+If you hit an endpoint that requires authentication, you can choose to authenticate either via basic authentication (providing a username/password in the headers) or through OAuth2 (being redirected to a login page provided by your OAuth2 provider).
+The actual user details and roles will be handled automatically depending on the chosen method.
+Next Steps:
+To implement OAuth2, you'll also need to configure the OAuth2 provider details in your application.properties or application.yml (e.g., client ID, client secret, etc.).
+
+### Steps to Get Client ID and Client Secret:
+#Go to the Google Developer Console.
+#Create a new project and enable the OAuth 2.0 service.
+#Under Credentials, create a new OAuth 2.0 client ID.
+#Configure the redirect URI for your application (e.g., http://localhost:8080/login/oauth2/code/google).
+#Use the provided Client ID and Client Secret in your application.properties.
+
+
+
