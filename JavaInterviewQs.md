@@ -2345,7 +2345,7 @@ EXPOSE 8080
 
 # Run the application, specifying the jar file
 ENTRYPOINT ["java", "-jar", "app.jar"]
-
+```
 
 
 ### Docker Commands
