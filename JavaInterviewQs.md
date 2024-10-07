@@ -2737,12 +2737,19 @@ public class Employee {
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.NamedQuery;
 import java.util.List;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+
+    // Using the named query defined in the Employee entity
     List<Employee> findByName(String name);
+
+    @Query(name = "Employee.findByName")
+    List<Employee> findEmployeesByName(@Param("name") String name);
 }
+
 
 
 import org.springframework.beans.factory.annotation.Autowired;
