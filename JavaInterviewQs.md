@@ -2822,32 +2822,45 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+//No need of @EnableWebSecurity and web configurer with SecurityFilterChain. those are old
+public class SecurityConfig {
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-            .withUser("user")
-            .password(passwordEncoder().encode("password"))
-            .roles("USER")
-            .and()
-            .withUser("admin")
-            .password(passwordEncoder().encode("admin"))
-            .roles("ADMIN");
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    // Replacing the configure method with SecurityFilterChain bean
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-            .authorizeRequests()
-            .antMatchers("/api/public").permitAll()
-            .antMatchers("/api/admin").hasRole("ADMIN")
-            .anyRequest().authenticated()
-            .and()
-            .httpBasic();
+                .authorizeRequests(authorizeRequests -> authorizeRequests
+                        .antMatchers("/api/public").permitAll()      // Public endpoint
+                        .antMatchers("/api/admin").hasRole("ADMIN")  // Admin-only endpoint
+                        .anyRequest().authenticated()                // All other endpoints require authentication
+                )
+                //.oauth2Login() In case of oauth2 login
+                //.and()
+                .httpBasic();  // Using basic authentication
+
+        return http.build();
     }
 
+    // Replacing inMemoryAuthentication() with a UserDetailsService bean
+    @Bean
+    public UserDetailsService userDetailsService() {
+        InMemoryUserDetailsManager userDetailsManager = new InMemoryUserDetailsManager();
+        userDetailsManager.createUser(
+                User.withUsername("user")
+                        .password(passwordEncoder().encode("password"))
+                        .roles("USER")
+                        .build()
+        );
+        userDetailsManager.createUser(
+                User.withUsername("admin")
+                        .password(passwordEncoder().encode("admin"))
+                        .roles("ADMIN")
+                        .build()
+        );
+        return userDetailsManager;
+    }
+
+    // Bean for password encoding
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
