@@ -4476,8 +4476,9 @@ You can create the index using the `createIndex` method. Below is an example of 
 
 ```javascript
 db.employees.createIndex(
-    { employeeId: 1, departmentId: 1 } // 1 for ascending order
-)
+    { employeeId: 1, departmentId: 1 },
+    { name: "employeeId_departmentId_index" }
+);
 ```
 ### 3. Verify the Index
 db.employees.getIndexes()
