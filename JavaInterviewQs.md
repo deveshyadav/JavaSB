@@ -2328,20 +2328,43 @@ Docker is an open-source platform that automates the deployment, scaling, and ma
 6. **CI/CD Integration**:
    - Docker integrates well with continuous integration and continuous deployment (CI/CD) tools, streamlining the development workflow.
   
-#### Use the official OpenJDK base image from the Docker Hub
+### DockerFile content
+
+```dockerfile
+# Use the official OpenJDK base image from the Docker Hub
 FROM openjdk:17-jdk-alpine
 
-#### Set the working directory inside the container
+# Set the working directory inside the container
 WORKDIR /app
 
-#### Copy the jar file from the host machine to the container's /app directory
+# Copy the jar file from the host machine to the container's /app directory
 COPY target/demo-application.jar app.jar
 
-#### Expose the port on which the application will run
+# Expose the port on which the application will run
 EXPOSE 8080
 
-#### Run the application, specifying the jar file
+# Run the application, specifying the jar file
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
+
+
+### Docker Commands
+
+1. `docker --version`                   # Display Docker version
+2. `docker pull <image-name>`            # Download image from registry
+3. `docker build -t <image-name> .`      # Build image from Dockerfile
+4. `docker run <image-name>`             # Run container from image
+5. `docker ps`                           # List running containers
+6. `docker stop <container-id>`          # Stop a running container
+7. `docker rm <container-id>`            # Remove a stopped container
+8. `docker images`                       # List local images
+9. `docker rmi <image-name>`             # Remove an image
+10. `docker exec -it <container-id> bash` # Access a running container
+11. `docker logs <container-id>`         # View container logs
+12. `docker push <repository>/<image-name>:<tag>`  # Push image to registry
+13. `docker-compose up`                  # Start services with Docker Compose
+14. `docker-compose down`                # Stop and remove Compose services
+15. `docker network ls`                  # List Docker networks
 
 
 
