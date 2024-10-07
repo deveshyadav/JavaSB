@@ -2594,7 +2594,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     // Additional query methods can be defined here if needed
+    //JpaRepository offers more advanced functionality like pagination and sorting (findAll(Pageable pageable)).
 }
+
+import org.springframework.data.repository.CrudRepository;
+
+public interface UserRepository extends CrudRepository<User, Long> {
+    // CrudRepository is more basic and only provides the standard CRUD operations such as save(), findById(), delete(), etc.
+}
+
 
 ```
 
