@@ -1089,6 +1089,7 @@ close() or dispose() methods, which should be explicitly called in a controlled 
 - **Serialization**: Object → Byte Stream
 - **Deserialization**: Byte Stream → Object
 
+ -- class Person implements Serializable
 
 # Question- Integrating SonarQube with a Java Spring Boot Project
 
