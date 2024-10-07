@@ -1012,6 +1012,12 @@ When an object is no longer referenced (i.e., there are no more references point
 
 - **Finalization**: Before an object is garbage collected, the JVM can call its `finalize()` method (if it exists) to allow the object to release resources.
 
+- **Modern Best Practice for cleanup**
+Instead of relying on finalize(), it’s recommended to use:
+
+try-with-resources (introduced in Java 7) for managing resources like files, sockets, and database connections. This ensures that resources are closed automatically.
+close() or dispose() methods, which should be explicitly called in a controlled manner.
+
 
 
 **Question- Java memory working in case of String literals and objects**
