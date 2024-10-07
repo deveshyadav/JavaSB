@@ -2327,6 +2327,22 @@ Docker is an open-source platform that automates the deployment, scaling, and ma
 
 6. **CI/CD Integration**:
    - Docker integrates well with continuous integration and continuous deployment (CI/CD) tools, streamlining the development workflow.
+  
+#### Use the official OpenJDK base image from the Docker Hub
+FROM openjdk:17-jdk-alpine
+
+#### Set the working directory inside the container
+WORKDIR /app
+
+#### Copy the jar file from the host machine to the container's /app directory
+COPY target/demo-application.jar app.jar
+
+#### Expose the port on which the application will run
+EXPOSE 8080
+
+#### Run the application, specifying the jar file
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
 
 
 ## Question- SOLID priniciples
