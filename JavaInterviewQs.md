@@ -4536,6 +4536,8 @@ When a producer sends messages to a Kafka topic, it must determine which partiti
 - Consumers in Kafka can join a **consumer group** to share the workload.
 - Each partition in a topic can be consumed by only one consumer within a group at a time, ensuring that messages are processed once and only once.
 
+**NOTE**- The Kafka broker handles the routing of messages to the correct partitions based on the partition key and consumer group assignments.
+
 ### Partition Assignment Strategies:
 
 - **Range Assignment**: Each consumer gets a contiguous range of partitions.
