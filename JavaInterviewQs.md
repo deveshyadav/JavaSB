@@ -4703,4 +4703,76 @@ To implement OAuth2, you'll also need to configure the OAuth2 provider details i
 #Use the provided Client ID and Client Secret in your application.properties.
 
 
+## Question- helm chart use
+Without Helm charts, you can still deploy applications to Kubernetes using raw Kubernetes manifests. These manifests are YAML or JSON files that define the desired state of your application resources, such as deployments, services, pods, and ingresses.
+
+But it will be cumbersome. take exmaple of a multimodule project with multi databse configs. Seperate manifests will have to be deployed. Helm chart is useful in this situation.
+
+my-ecommerce-app
+├── Chart.yaml
+├── values.yaml
+├── templates
+│   ├── frontend-deployment.yaml
+│   ├── frontend-service.yaml
+│   ├── backend-deployment.yaml
+│   ├── backend-service.yaml
+│   ├── database-deployment.yaml
+│   ├── database-service.yaml
+│   └── ingress.yaml
+
+
+Command	Description
+helm init	Initializes Helm on your system.
+helm repo add <name> <url>	Adds a Helm repository to your local configuration.
+helm repo update	Updates the repositories in your local configuration.
+helm search <keyword>	Searches for charts in the Helm repositories.
+helm install <name> <chart>	Installs a Helm chart.
+helm upgrade <name> <chart>	Upgrades an existing Helm chart.
+helm delete <name>	Deletes a Helm chart.
+helm get values <name>	Gets the values for a Helm chart.
+helm lint <chart>	Lints a Helm chart to check for errors.
+helm package <chart>	Packages a Helm chart into a .tgz file.
+helm push <chart> <repo>	Pushes a Helm chart to a remote repository.
+
+**Yaml files**
+**Chart.yaml**
+```yaml
+apiVersion: v2
+name: my-app
+version: 1.0.0
+description: A Spring Boot application with a MySQL database and Nginx Ingress
+```
+
+**Values.yaml**
+```yaml
+replicaCount: 1
+image:
+  repository: my-image
+  tag: latest
+persistence:
+  enabled: true
+  size: 1Gi
+mysql:
+  enabled: true
+  host: my-mysql-service
+  port: 3306
+  username: my-user
+  password: my-password
+  database: my-database
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+  hosts:
+    - host: my-app.example.com
+      paths:
+      - path: /
+        backend:
+          service:
+            name: my-app
+            port:
+              number: 8080
+```
+
+
 
