@@ -780,7 +780,7 @@ Proxy	-> Controls access to another object.
 
 
 
-## Behavioral Design Patterns in Java with Code Samples
+## Behavioral Design Patterns in Java with Code Samples  
 
 Chain of Responsibility Pattern
 
