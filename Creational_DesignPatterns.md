@@ -782,8 +782,8 @@ Proxy	-> Controls access to another object.
 
 ## Behavioral Design Patterns in Java with Code Samples  
 
-Chain of Responsibility Pattern
 
+Chain of Responsibility Pattern  
 Purpose: Passes a request along a chain of handlers where each handler decides either to process the request or pass it on.
 Use Case: When multiple objects can handle a request, and the handler is determined at runtime.
 
