@@ -145,3 +145,77 @@ public class CopyOnWriteArraySetExample {
     }
 }
 ```
+
+
+# RestTemplate and WebClient Methods
+
+## RestTemplate Methods
+
+1. **`getForObject(String url, Class<T> responseType, Object... uriVariables)`**
+   - Retrieves a representation by doing a GET on the specified URL.
+
+2. **`getForEntity(String url, Class<T> responseType, Object... uriVariables)`**
+   - Retrieves an entity by doing a GET on the specified URL.
+
+3. **`postForObject(String url, Object request, Class<T> responseType, Object... uriVariables)`**
+   - Creates a new resource by POSTing the given object to the specified URL.
+
+4. **`postForEntity(String url, Object request, Class<T> responseType, Object... uriVariables)`**
+   - Creates a new resource and returns the response entity.
+
+5. **`put(String url, Object request, Object... uriVariables)`**
+   - Updates a resource by doing a PUT on the specified URL.
+
+6. **`delete(String url, Object... uriVariables)`**
+   - Deletes the resource at the specified URL.
+
+7. **`exchange(String url, HttpMethod method, HttpEntity<?> requestEntity, Class<T> responseType, Object... uriVariables)`**
+   - Executes a specified HTTP method against the specified URL.
+
+8. **`headForHeaders(String url, Object... uriVariables)`**
+   - Retrieves the headers for the resource at the specified URL.
+
+9. **`optionsForAllow(String url, Object... uriVariables)`**
+   - Retrieves the HTTP methods that are supported at the specified URL.
+
+## WebClient Methods
+
+1. **`get()`**
+   - Initiates a GET request.
+
+2. **`post()`**
+   - Initiates a POST request.
+
+3. **`put()`**
+   - Initiates a PUT request.
+
+4. **`delete()`**
+   - Initiates a DELETE request.
+
+5. **`exchange()`**
+   - Executes a request with a specified method and returns a response.
+
+6. **`uri(String uriTemplate, Object... uriVariables)`**
+   - Sets the URI for the request.
+
+7. **`bodyValue(T body)`**
+   - Sets the body of the request.
+
+8. **`retrieve()`**
+   - Initiates the request and prepares to handle the response.
+
+9. **`header(String headerName, String... headerValues)`**
+   - Adds headers to the request.
+
+10. **`accept(MediaType... acceptableMediaTypes)`**
+    - Sets the Accept header for the response.
+
+11. **`timeout(Duration timeout)`**
+    - Sets a timeout for the request.
+
+12. **`exchangeToMono(Function<ClientResponse, Mono<T>> responseMapper)`**
+    - Maps the response to a Mono.
+
+## Summary
+- `RestTemplate` is a synchronous client and is more straightforward to use for simple requests.
+- `WebClient` is a reactive, non-blocking client that is more suitable for modern applications requiring asynchronous processing.
