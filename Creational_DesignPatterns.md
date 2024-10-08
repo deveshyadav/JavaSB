@@ -770,13 +770,13 @@ public class ProxyPatternDemo {
 
 ### Summary of Structural Patterns:
 ### Pattern ->	Purpose
-Adapter	-> Converts one interface to another.
-Bridge	-> Separates abstraction from implementation.
-Composite	-> Composes objects into tree structures.
-Decorator	-> Adds behavior to objects dynamically.
-Facade	-> Provides a unified interface to a set of interfaces in a system.
-Flyweight	-> Reduces memory use by sharing as much data as possible.
-Proxy	-> Controls access to another object.
+Adapter	-> Converts one interface to another.  
+Bridge	-> Separates abstraction from implementation.  
+Composite	-> Composes objects into tree structures.  
+Decorator	-> Adds behavior to objects dynamically.  
+Facade	-> Provides a unified interface to a set of interfaces in a system.  
+Flyweight	-> Reduces memory use by sharing as much data as possible.  
+Proxy	-> Controls access to another object.  
 
 
 
@@ -1614,15 +1614,15 @@ public class ObserverPatternDemo {
 }
 ### Summary of Behavioral Patterns:
 ### Pattern	->Purpose
-Chain of Responsibility -> 	Passes a request along a chain of handlers.
-Command ->	Encapsulates a request as an object.
-Interpreter ->	Defines a grammar and an interpreter for the language.
-Iterator	->Provides a way to access elements of a collection.
-Mediator	->Defines an object that coordinates interactions between peers.
-Memento	->Captures and restores an object's internal state.
-Observer	->Notifies dependent objects of state changes.
-State	->Allows an object to change its behavior when its state changes
-Strategy	->Encapsulates algorithms for interchangeability.
-Template ->Method	Defines a skeleton of an algorithm, deferring some steps.
-Visitor	->Separates algorithm from object structure.
+Chain of Responsibility -> 	Passes a request along a chain of handlers.  
+Command ->	Encapsulates a request as an object.  
+Interpreter ->	Defines a grammar and an interpreter for the language.    
+Iterator	->Provides a way to access elements of a collection.  
+Mediator	->Defines an object that coordinates interactions between peers.  
+Memento	->Captures and restores an object's internal state.  
+Observer	->Notifies dependent objects of state changes.  
+State	->Allows an object to change its behavior when its state changes  
+Strategy	->Encapsulates algorithms for interchangeability.  
+Template ->Method	Defines a skeleton of an algorithm, deferring some steps.  
+Visitor	->Separates algorithm from object structure.  
 
