@@ -104,9 +104,95 @@ db.collection.updateOne(
 ); // upsert
 
 db.collection.find({ department: { $in: ["HR", "IT"] } }); // in query
-
-
-
-
-
 ```
+
+
+# MongoDB `$match` Query Filters
+
+1. **$eq** — Equals
+   - Matches documents where the field is equal to the specified value.
+   `{ field: { $eq: value } }`
+
+2. **$ne** — Not Equals
+   - Matches documents where the field is not equal to the specified value.
+   `{ field: { $ne: value } }`
+
+3. **$gt** — Greater Than
+   - Matches documents where the field value is greater than the specified value.
+   `{ field: { $gt: value } }`
+
+4. **$gte** — Greater Than or Equal
+   - Matches documents where the field value is greater than or equal to the specified value.
+   `{ field: { $gte: value } }`
+
+5. **$lt** — Less Than
+   - Matches documents where the field value is less than the specified value.
+   `{ field: { $lt: value } }`
+
+6. **$lte** — Less Than or Equal
+   - Matches documents where the field value is less than or equal to the specified value.
+   `{ field: { $lte: value } }`
+
+7. **$in** — In
+   - Matches documents where the field’s value exists in the provided array of values.
+   `{ field: { $in: [value1, value2, value3] } }`
+
+8. **$nin** — Not In
+   - Matches documents where the field’s value does not exist in the provided array of values.
+   `{ field: { $nin: [value1, value2, value3] } }`
+
+9. **$exists** — Field Existence
+   - Matches documents where the field exists or does not exist based on a boolean.
+   `{ field: { $exists: true } }`
+
+10. **$type** — Type
+    - Matches documents where the field is of the specified BSON type.
+    `{ field: { $type: "string" } }`
+
+11. **$regex** — Regular Expression
+    - Matches documents where the field’s value matches the given regular expression.
+    `{ field: { $regex: /^pattern/ } }`
+
+12. **$all** — Array Match
+    - Matches arrays that contain all elements specified in the array.
+    `{ field: { $all: [element1, element2] } }`
+
+13. **$size** — Array Size
+    - Matches arrays that have the specified number of elements.
+    `{ field: { $size: 3 } }`
+
+14. **$elemMatch** — Element Match
+    - Matches documents that contain an array field with at least one element that matches all the specified conditions.
+    `{ field: { $elemMatch: { $gt: 5, $lt: 10 } } }`
+
+15. **$and** — Logical AND
+    - Combines multiple conditions; all must be true.
+    `{ $and: [ { condition1 }, { condition2 } ] }`
+
+16. **$or** — Logical OR
+    - Matches documents if at least one of the specified conditions is true.
+    `{ $or: [ { condition1 }, { condition2 } ] }`
+
+17. **$not** — Logical NOT
+    - Inverts the effect of a query expression.
+    `{ field: { $not: { $gt: 5 } } }`
+
+18. **$nor** — Logical NOR
+    - Matches documents that fail all the specified conditions.
+    `{ $nor: [ { condition1 }, { condition2 } ] }`
+
+19. **$mod** — Modulus
+    - Matches documents where the field value divided by the divisor has the specified remainder.
+    `{ field: { $mod: [divisor, remainder] } }`
+
+20. **$geoWithin** — Geographic Boundary
+    - Matches documents with geospatial data that exist within a specified geometry.
+    `{ location: { $geoWithin: { $geometry: { type: "Polygon", coordinates: [...] } } } }`
+
+21. **$text** — Text Search
+    - Matches documents that contain the specified text.
+    `{ $text: { $search: "text" } }`
+
+22. **$where** — JavaScript Expression
+    - Matches documents that satisfy a JavaScript expression.
+    `{ $where: "this.field > 10" }`
