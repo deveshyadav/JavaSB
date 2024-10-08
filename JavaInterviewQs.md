@@ -922,6 +922,28 @@ WHERE salary = (
 );
 ```
 
+## Question- Try with resource code
+
+```java
+public class TryWithResourcesExample {
+
+    public static void main(String[] args) {
+        // File path to be read
+        String filePath = "example.txt";
+
+        // Using try-with-resources to automatically close the resources
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                System.out.println(line);  // Print each line from the file
+            }
+        } catch (IOException e) {
+            e.printStackTrace();  // Handle any exceptions (like file not found or IO issues)
+        }
+    }
+}
+```
+
 **Question:- Implement a rate limiter to limit number of requests made to an endpoint.**
 
 # Rate Limiter Setup and Working
