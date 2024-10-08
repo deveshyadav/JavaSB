@@ -219,3 +219,156 @@ public class CopyOnWriteArraySetExample {
 ## Summary
 - `RestTemplate` is a synchronous client and is more straightforward to use for simple requests.
 - `WebClient` is a reactive, non-blocking client that is more suitable for modern applications requiring asynchronous processing.
+- 
+
+## Collection implementation scenario Questions
+
+```java
+
+//Count Employees by Department
+  Map<String, Long> employeeCountByDepartment = employees.stream()
+                                                             .collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting()));
+
+// Get Distinct Departments
+Set<String> distinctDepartments = employees.stream()
+                                                  .map(Employee::getDepartment)
+                                                  .collect(Collectors.toSet());
+
+//Sort Employees by Name
+List<Employee> sortedEmployees = employees.stream()
+                                                  .sorted((e1, e2) -> e1.name.compareTo(e2.name))
+                                                  .collect(Collectors.toList());
+
+//Calculate Average Salary
+double averageSalary = employees.stream().mapToDouble(Employee::getSalary).average().orElse(0);
+
+//Find Employee with Maximum Salary
+Employee maxSalaryEmployee = employees.stream()
+                                              .max(Comparator.comparing(Employee::getSalary))
+                                              .orElse(null);
+
+//Group Employees by Salary Range
+ Map<String, List<Employee>> employeesBySalaryRange = employees.stream()
+            .collect(Collectors.groupingBy(emp -> {
+                if (emp.getSalary() < 50000) return "<50k";
+                else if (emp.getSalary() >= 50000 && emp.getSalary() <= 70000) return "50k-70k";
+                else return ">70k";
+            }));
+
+
+//Convert List of Employees to a Map
+ Map<String, Double> employeeMap = employees.stream()
+            .collect(Collectors.toMap(Employee::getName, Employee::getSalary));
+
+//Chaining Optional
+String firstEmployeeName = service.getDepartment()
+            .flatMap(department -> department.getEmployees().stream().findFirst())
+            .map(Employee::getName)
+            .orElse("No employees found");
+
+
+```
+
+
+## Common Java Exceptions
+
+### General Exceptions
+
+1. **NullPointerException**  
+   Occurs when an application attempts to use an object reference that has the `null` value.
+
+2. **ArrayIndexOutOfBoundsException**  
+   Thrown to indicate that an array has been accessed with an illegal index, i.e., the index is negative or greater than or equal to the size of the array.
+
+3. **ClassCastException**  
+   Occurs when an object is cast to a subclass of which it is not an instance.
+
+4. **ArithmeticException**  
+   Thrown when an exceptional arithmetic condition has occurred, such as division by zero.
+
+5. **IllegalArgumentException**  
+   Indicates that a method has been passed an illegal or inappropriate argument.
+
+6. **IllegalStateException**  
+   Signals that a method has been invoked at an illegal or inappropriate time.
+
+7. **NumberFormatException**  
+   Thrown when an attempt to convert a string to a numeric type fails because the string does not have an appropriate format.
+
+8. **IOException**  
+   Signals that an I/O exception of some sort has occurred. This is a checked exception.
+
+9. **FileNotFoundException**  
+   A subclass of `IOException`, thrown when an attempt to open the file denoted by a specified pathname has failed.
+
+10. **EOFException**  
+    Thrown when an end of file or end of stream has been reached unexpectedly during input.
+
+11. **SocketException**  
+    Indicates an error occurred while creating or accessing a `Socket`.
+
+12. **InterruptedException**  
+    Thrown when a thread is waiting, sleeping, or otherwise occupied, and another thread interrupts it.
+
+13. **StackOverflowError**  
+    Thrown when a stack overflow occurs because an application recurses too deeply.
+
+14. **OutOfMemoryError**  
+    Signals that the Java Virtual Machine cannot allocate an object because it is out of memory and has no more memory to give.
+
+15. **SecurityException**  
+    Indicates a security violation has occurred, typically when a security manager is present and the requested operation is not allowed.
+
+16. **ClassNotFoundException**  
+    Thrown when an application tries to load a class through its string name but cannot find its definition.
+
+17. **InvocationTargetException**  
+    Thrown when an invoked method or constructor throws an exception.
+
+18. **IndexOutOfBoundsException**  
+    Signals that an index of some sort (e.g., in a string or array) is out of the allowable range.
+
+19. **MalformedURLException**  
+    Indicates that a malformed URL has occurred.
+
+20. **SQLException**  
+    Signals that a database access error or other errors occur when working with JDBC.
+
+21. **ParseException**  
+    Indicates that an error has occurred while parsing a string.
+
+22. **UnsupportedClassVersionError**  
+    Thrown when a class has been compiled with a more recent version of the Java Runtime Environment than the currently running JRE.
+
+### Collection-Related Exceptions
+
+23. **ConcurrentModificationException**  
+    Occurs when a collection is modified while it is being iterated, except through the iterator's own remove method.
+
+24. **NoSuchElementException**  
+    Thrown by various accessor methods to indicate that the requested element does not exist.
+
+25. **UnsupportedOperationException**  
+    Signals that the requested operation is not supported, typically in the context of a collection.
+
+### Bean-Related Exceptions
+
+26. **BeanCreationException**  
+    Thrown when a bean cannot be created in a Spring context.
+
+27. **NoSuchBeanDefinitionException**  
+    Indicates that a bean definition cannot be found in the Spring application context.
+
+28. **UnsatisfiedDependencyException**  
+    Thrown when a bean has an unsatisfied dependency that cannot be resolved.
+
+29. **BeanNotOfRequiredTypeException**  
+    Thrown when a bean is found but is not of the required type.
+
+30. **PropertyVetoException**  
+    Thrown when a property change is vetoed by a listener.
+
+This list now covers general, collection-related, and bean-related exceptions, providing a comprehensive overview of common Java exceptions you may encounter during development.
+
+                                                             
+
