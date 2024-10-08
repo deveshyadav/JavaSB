@@ -1212,7 +1212,7 @@ Chain of Responsibility Pattern
 
 Purpose: Passes a request along a chain of handlers where each handler decides either to process the request or pass it on.
 Use Case: When multiple objects can handle a request, and the handler is determined at runtime.
-java
+```java
 Copy code
 abstract class Logger {
     public static int INFO = 1;
@@ -1275,11 +1275,12 @@ public class ChainPatternDemo {
         loggerChain.logMessage(Logger.DEBUG, "This is a debug message.");
     }
 }
+```
 Command Pattern
 
 Purpose: Encapsulates a request as an object, thereby allowing for parameterization of clients with different requests.
 Use Case: When you need to issue requests to objects without knowing about the operation being requested.
-java
+```java
 Copy code
 interface Command {
     void execute();
@@ -1346,11 +1347,12 @@ public class CommandPatternDemo {
         remote.pressButton();
     }
 }
+```
 Interpreter Pattern
 
 Purpose: Provides a way to evaluate language grammar or expressions.
 Use Case: When you need to interpret a specific language or notation.
-java
+```java
 Copy code
 interface Expression {
     boolean interpret(String context);
@@ -1393,11 +1395,12 @@ public class InterpreterPatternDemo {
         System.out.println("Does context contain Java or Python? " + isProgrammingLanguage.interpret("I love Java"));
     }
 }
+```
 Iterator Pattern
 
 Purpose: Provides a way to access the elements of an aggregate object sequentially without exposing its underlying representation.
 Use Case: When you need to traverse a collection without exposing its internal structure.
-java
+```java
 Copy code
 interface Iterator {
     boolean hasNext();
@@ -1445,11 +1448,12 @@ public class IteratorPatternDemo {
         }
     }
 }
+```
 Mediator Pattern
 
 Purpose: Defines an object that encapsulates how a set of objects interact, promoting loose coupling.
 Use Case: When you want to reduce communication complexity between objects.
-java
+```java
 Copy code
 class ChatRoom {
     public static void showMessage(User user, String message) {
@@ -1482,11 +1486,12 @@ public class MediatorPatternDemo {
         jane.sendMessage("Hi John!");
     }
 }
+```
 Memento Pattern
 
 Purpose: Captures the state of an object without exposing its internal structure, allowing it to be restored later.
 Use Case: When you need to rollback to a previous state.
-java
+```java
 Copy code
 class Memento {
     private String state;
@@ -1550,12 +1555,13 @@ public class MementoPatternDemo {
         System.out.println("Second saved state: " + originator.getState());
     }
 }
+```
 Observer Pattern
 
 Purpose: Defines a one-to-many dependency between objects so that when one object changes state, all its dependents are notified and updated automatically.
 Use Case: When an object should notify other objects without being tightly coupled to them.
-java
-Copy code
+```java
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -1612,6 +1618,7 @@ public class ObserverPatternDemo {
         subject.setState(10);
     }
 }
+```
 ### Summary of Behavioral Patterns:
 ### Pattern	->Purpose
 Chain of Responsibility -> 	Passes a request along a chain of handlers.  
