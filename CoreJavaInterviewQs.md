@@ -370,5 +370,158 @@ String firstEmployeeName = service.getDepartment()
 
 This list now covers general, collection-related, and bean-related exceptions, providing a comprehensive overview of common Java exceptions you may encounter during development.
 
-                                                             
+
+## Runnable vs Callable
+
+### Runnable vs Callable: Key Differences
+
+| **Feature**              | **Runnable**                                  | **Callable**                                          |
+|--------------------------|-----------------------------------------------|------------------------------------------------------|
+| **Introduced in**         | Java 1.0                                      | Java 5 (as part of `java.util.concurrent`)            |
+| **Return Type**           | `void` (no result returned)                   | Returns a result of type `V` through `Future<V>`      |
+| **Method to Implement**   | `run()`                                       | `call()`                                              |
+| **Exception Handling**    | Cannot throw checked exceptions               | Can throw checked exceptions                          |
+| **Concurrency Framework** | Works with `Thread`, `Executor`, etc.         | Works with `ExecutorService`, `FutureTask`, etc.      |
+| **Usage**                 | Suitable for simple tasks without results     | Suitable for tasks that return results or throw exceptions |
+| **Concurrency**           | Can be executed by `Thread`, `ExecutorService`| Can be executed by `ExecutorService`, `Future`, etc.  |
+| **Syntax**                | `Runnable task = () -> { ... };`              | `Callable<V> task = () -> { return V; };`            |
+
+#### Example Runnable:
+```java
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class RunnableExample {
+    public static void main(String[] args) {
+        // Create a Runnable task
+        Runnable task = () -> {
+            System.out.println("Runnable Task is running...");
+            try {
+                Thread.sleep(2000);  // Simulate a long-running task
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("Runnable Task completed.");
+        };
+
+        // Use ExecutorService to run the Runnable task
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(task);  // No result is returned, we just run the task
+
+        // Shut down the executor
+        executor.shutdown();
+    }
+}
+
+```
+
+#### Callable
+```java
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ExecutionException;
+
+public class CallableExample {
+    public static void main(String[] args) {
+        // Create a Callable task
+        Callable<Integer> task = () -> {
+            System.out.println("Callable Task is running...");
+            Thread.sleep(2000);  // Simulate a long-running task
+            System.out.println("Callable Task completed.");
+            return 42;  // Return a result
+        };
+
+        // Use ExecutorService to submit the Callable task
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<Integer> future = executor.submit(task);  // Get a Future to hold the result
+
+        try {
+            // Retrieve the result of the Callable task
+            Integer result = future.get();  // Blocking call, waits for the task to complete
+            System.out.println("Callable Task result: " + result);  // Prints 42
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        } finally {
+            // Shut down the executor
+            executor.shutdown();
+        }
+    }
+}
+
+```
+
+## Future vs CompletableFuture
+
+| Feature                  | Future                                      | CompletableFuture                                  |
+|--------------------------|---------------------------------------------|---------------------------------------------------|
+| **Asynchronous Handling** | Only allows blocking operations to retrieve the result using `get()`. | Provides non-blocking, asynchronous operations using callbacks (`thenApply`, `thenAccept`, etc.). |
+| **Result Handling**       | Blocks until the result is available.       | Can be handled with callbacks, without blocking.   |
+| **Chaining**              | No support for chaining dependent tasks.    | Supports method chaining for task pipelines.       |
+| **Exception Handling**    | Must handle exceptions after the task completes using `get()`. | Allows exception handling using `exceptionally`, `handle`, or `whenComplete`. |
+| **Completion Triggering** | Only completes when the task is done.       | Can manually complete using `complete()` or `completeExceptionally()`. |
+| **Concurrency**           | Executes a single task.                     | Can combine multiple asynchronous tasks using `allOf()`, `anyOf()`, etc. |
+| **Cancellation**          | Can be cancelled using `cancel()`.          | Can be cancelled but also provides a way to trigger a callback when cancelled. |
+| **Parallel Execution**    | Not well-suited for parallel task execution. | Natively supports parallel execution with `supplyAsync()`. |
+
+
+### Future
+```java
+import java.util.concurrent.*;
+
+public class FutureExample {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+
+        // Submit a task to the executor
+        Future<String> future = executor.submit(() -> {
+            Thread.sleep(2000);  // Simulating a long-running task
+            return "Future Task Completed";
+        });
+
+        // Do some other work, then wait for the task to complete
+        System.out.println("Doing other work...");
+        
+        // Blocking call to get the result
+        String result = future.get();  
+        System.out.println(result);
+
+        // Shut down the executor
+        executor.shutdown();
+    }
+}
+
+```
+
+### COmpletableFuture
+```java
+import java.util.concurrent.CompletableFuture;
+
+public class CompletableFutureExample {
+    public static void main(String[] args) {
+        // Asynchronous task using CompletableFuture
+        CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(2000);  // Simulating a long-running task
+            } catch (InterruptedException e) {
+                throw new IllegalStateException(e);
+            }
+            return "CompletableFuture Task Completed";
+        });
+
+        // Attach a callback to handle the result
+        completableFuture.thenAccept(result -> System.out.println(result));
+        
+        // Do some other work while the task is still running
+        System.out.println("Doing other work...");
+
+        // Keep the main thread alive until the CompletableFuture task completes
+        completableFuture.join();  // Non-blocking waiting for completion
+    }
+}
+
+```
+
+
 
