@@ -524,4 +524,58 @@ public class CompletableFutureExample {
 ```
 
 
+## Important methods of CompletableFuture and ExecutorService
+
+Here are the important methods for CompletableFuture and ExecutorService in Java's java.util.concurrent package:
+
+CompletableFuture
+complete(T value)
+
+Completes the CompletableFuture with the given value.
+completeExceptionally(Throwable ex)
+
+Completes the CompletableFuture with an exception.
+thenApply(Function<? super T,? extends U> fn)
+
+Returns a new CompletableFuture that is completed by applying the given function to the result of this CompletableFuture.
+thenAccept(Consumer<? super T> action)
+
+Returns a new CompletableFuture that, when this CompletableFuture completes normally, will execute the given action with the result.
+thenRun(Runnable action)
+
+Returns a new CompletableFuture that, when this CompletableFuture completes normally, will execute the given action.
+exceptionally(Function<Throwable, ? extends T> fn)
+
+Returns a new CompletableFuture that is completed with the result of the given function if this CompletableFuture completed exceptionally.
+allOf(CompletableFuture<?>... futures)
+
+Returns a new CompletableFuture that is completed when all of the given CompletableFutures complete.
+anyOf(CompletableFuture<?>... futures)
+
+Returns a new CompletableFuture that is completed when any of the given CompletableFutures complete.
+ExecutorService
+submit(Callable<T> task)
+
+Submits a Callable task for execution and returns a Future representing the pending results of the task.
+submit(Runnable task)
+
+Submits a Runnable task for execution and returns a Future representing the pending results of the task.
+invokeAll(Collection<? extends Callable<T>> tasks)
+
+Executes the given tasks, returning a list of Future objects.
+invokeAny(Collection<? extends Callable<T>> tasks)
+
+Executes the given tasks and returns the result of the first successfully completed task.
+shutdown()
+
+Initiates an orderly shutdown in which previously submitted tasks are executed but no new tasks will be accepted.
+shutdownNow()
+
+Attempts to stop all actively executing tasks and halts the processing of waiting tasks.
+isShutdown()
+
+Returns true if this executor has been shut down.
+isTerminated()
+
+Returns true if all tasks have completed following shut down.
 
