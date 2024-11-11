@@ -81,6 +81,131 @@ Question: You’re implementing a workflow where an object’s behavior should c
 Answer: State Pattern – It allows an object to change its behavior dynamically as its state changes, useful for workflow-based applications.
 
 
+# Scenario-Based Questions and Answers on Java Streams, Collections, and Lambda Expressions
+
+## Stream and Lambda Expression Scenarios
+
+1. **Filtering and Transformation**  
+   *Question*: Given a list of integers, filter out all even numbers, square the remaining odd numbers, and collect the results into a new list.  
+   *Answer*: `arr.stream().filter(n -> n % 2 != 0).map(n -> n * n).collect(Collectors.toList());`
+
+2. **Grouping by Property**  
+   *Question*: You have a list of `Employee` objects with attributes `name`, `department`, and `salary`. How would you use streams to group employees by department and then find the highest-paid employee in each department?  
+   *Answer*: `employees.stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.maxBy(Comparator.comparing(Employee::getSalary))));`
+
+3. **Counting Elements with a Condition**  
+   *Question*: Given a list of strings representing product names, count how many names start with a specific letter (e.g., 'A').  
+   *Answer*: `products.stream().filter(p -> p.startsWith("A")).count();`
+
+4. **Collecting Elements into a Custom Data Structure**  
+   *Question*: Given a list of numbers, partition them into two lists: one for even numbers and one for odd numbers.  
+   *Answer*: `numbers.stream().collect(Collectors.partitioningBy(n -> n % 2 == 0));`
+
+5. **Sorting and Mapping**  
+   *Question*: You have a list of `Person` objects with `name` and `age`. How would you sort this list by age in descending order and collect the sorted names into a list?  
+   *Answer*: `people.stream().sorted(Comparator.comparing(Person::getAge).reversed()).map(Person::getName).collect(Collectors.toList());`
+
+6. **Finding Maximum and Minimum**  
+   *Question*: Given a list of integers, find the maximum and minimum values in the list using streams. If the list is empty, handle it gracefully.  
+   *Answer*: `OptionalInt max = numbers.stream().mapToInt(Integer::intValue).max();` and similar for `min`.
+
+7. **Concatenating Strings**  
+   *Question*: Given a list of strings, concatenate all strings into a single comma-separated string.  
+   *Answer*: `String result = strings.stream().collect(Collectors.joining(", "));`
+
+8. **Frequency Count of Elements**  
+   *Question*: Given a list of words, use streams to count the frequency of each unique word and return a map where the keys are words and the values are their counts.  
+   *Answer*: `words.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));`
+
+9. **Transforming Nested Collections**  
+   *Question*: You have a list of lists, where each inner list contains integers. Flatten this list of lists into a single list containing all integers.  
+   *Answer*: `nestedList.stream().flatMap(Collection::stream).collect(Collectors.toList());`
+
+10. **Removing Duplicates and Sorting**  
+    *Question*: Given a list of integers that may contain duplicates, remove duplicates and sort the resulting list in ascending order.  
+    *Answer*: `numbers.stream().distinct().sorted().collect(Collectors.toList());`
+
+11. **Mapping and Collecting to a Map**  
+    *Question*: You have a list of `Person` objects with `name` and `email`. Create a map where each name is a key and the email is the corresponding value, handling duplicates if necessary.  
+    *Answer*: `people.stream().collect(Collectors.toMap(Person::getName, Person::getEmail, (existing, replacement) -> existing));`
+
+12. **Conditional Mapping and Filtering**  
+    *Question*: Given a list of strings representing cities, filter out all cities that contain the letter 'a' and convert the remaining city names to uppercase.  
+    *Answer*: `cities.stream().filter(c -> !c.contains("a")).map(String::toUpperCase).collect(Collectors.toList());`
+
+13. **Finding an Element with a Condition**  
+    *Question*: Given a list of products, each with a `name` and `price`, find the first product with a price greater than a specified value.  
+    *Answer*: `Optional<Product> product = products.stream().filter(p -> p.getPrice() > specifiedValue).findFirst();`
+
+14. **Parallel Processing with Streams**  
+    *Question*: Given a large list of integers, calculate the sum of all even numbers using parallel streams.  
+    *Answer*: `int sum = numbers.parallelStream().filter(n -> n % 2 == 0).mapToInt(Integer::intValue).sum();`
+
+15. **Distinct and Counting Operations**  
+    *Question*: Given a list of strings where some strings may be repeated, count how many unique strings exist in the list.  
+    *Answer*: `long uniqueCount = strings.stream().distinct().count();`
+
+---
+
+## Collection Choice Scenarios
+
+1. **Selecting the Best Collection for Unique Elements**  
+   *Question*: You need to store a large set of unique user IDs and frequently check if an ID already exists in the collection.  
+   *Answer*: Use `HashSet` for fast lookups and unique storage.
+
+2. **Maintaining Order of Elements**  
+   *Question*: You want to maintain a list of events in the order they occurred and frequently add new events at the end.  
+   *Answer*: Use `ArrayList` for maintaining insertion order and fast appends.
+
+3. **Finding the Best Collection for Key-Value Pairs with Lookup**  
+   *Question*: You need to store employee IDs as keys and employee names as values and want fast retrieval by ID.  
+   *Answer*: Use `HashMap` for fast key-based retrievals.
+
+4. **Choosing a Collection for Fast Insertion and Removal**  
+   *Question*: In an application with a high volume of insertions and deletions from both ends, which collection type would you choose for optimal performance?  
+   *Answer*: Use `LinkedList` for efficient insertions and deletions at both ends.
+
+5. **Handling Null Elements**  
+   *Question*: You need a collection that can store objects where some of the elements might be `null`.  
+   *Answer*: `ArrayList` and `HashMap` can handle `null` values, but be mindful that `HashSet` allows `null` once.
+
+6. **Storing Sorted Elements Efficiently**  
+   *Question*: You want to store elements in a collection that automatically maintains elements in sorted order as they are added.  
+   *Answer*: Use `TreeSet` to keep elements sorted automatically.
+
+7. **Grouping and Counting Elements Efficiently**  
+   *Question*: You need a collection that can group elements and maintain a count for each group, like tracking the number of times each word appears in a document.  
+   *Answer*: Use `HashMap` with values as counters or `Collectors.groupingBy()` for counting via streams.
+
+8. **Tracking Recently Accessed Elements**  
+   *Question*: In a cache implementation, you need to track the order in which elements were accessed and remove the least recently accessed element when the cache is full.  
+   *Answer*: Use `LinkedHashMap` with access-order set to `true` or `LinkedHashSet` with an eviction policy.
+
+9. **Retrieving Elements Based on Priority**  
+   *Question*: You’re building a task scheduler and need to prioritize tasks based on their priority level, always retrieving the highest-priority task first.  
+   *Answer*: Use `PriorityQueue` to retrieve elements based on their natural or custom priority.
+
+10. **Using Immutable Collections**  
+    *Question*: You have a list of configuration values that should not change during the runtime of the application.  
+    *Answer*: Use `Collections.unmodifiableList()`, `List.of()`, or `Map.of()` for immutable collections.
+
+11. **Handling Concurrent Access**  
+    *Question*: In a multi-threaded environment, multiple threads will read and update a collection simultaneously.  
+    *Answer*: Use `ConcurrentHashMap` for thread-safe access without blocking.
+
+12. **Choosing Collection for Bi-directional Mapping**  
+    *Question*: You need a collection that allows you to look up values by key and also look up keys by value.  
+    *Answer*: Use libraries like Guava’s `BiMap`, or use two `HashMap`s for bi-directional mapping.
+
+13. **Efficient Membership Testing**  
+    *Question*: You have a large collection of items and need to frequently check for the existence of specific items.  
+    *Answer*: Use `HashSet` or `TreeSet` for fast membership checks.
+
+14. **Custom Ordering of Elements**  
+    *Question*: You need to store a collection of objects in a specific custom order that is not the natural order.  
+    *Answer*: Use `TreeSet` or `TreeMap` with a custom comparator or `List` sorted with `Comparator`.
+
+
 **Question 1: Java 8 features**
 
 Java 8 introduced several powerful new features and enhancements that significantly changed the way Java programming is approached. Below are the main features of Java 8 along with explanations:
