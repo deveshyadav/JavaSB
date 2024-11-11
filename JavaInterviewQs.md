@@ -1,97 +1,82 @@
-**OOPs Qs**
--> Why default methods were introduced in interfaces in java?
---To provide a way to add new functionality to existing interfaces--
+# Questions on OOP and Design Patterns Concepts
 
--> In what scenario would you prefer to use abstract class and interfaces?
-Abstract Classes:
-When you want to provide a partial implementation and define a common behavior for a group of subclasses.
-When you need to share state and methods among subclasses.
+### 1. Why were default methods introduced in interfaces in Java?
+- To provide a way to add new functionality to existing interfaces without breaking existing implementations.
 
-Interfaces:
-When you want to define a contract for a group of classes without imposing a specific implementation.
-When you want to achieve multiple inheritance of types.
-To enable polymorphism and loose coupling.
+### 2. In what scenario would you prefer to use an abstract class and interfaces?
 
--> What is runtime polymorphism and dynamic method dispatch. Whats JVM roll in this?
-Example:- class Animal {
-    public void sound() {
-        System.out.println("Generic animal sound");
-    }
-}
-class Dog extends Animal {
-    @Override
-    public void sound() {
-        System.out.println("Woof!");
-    }
-}
-public class Main {
-    public static void main(String[] args) {
-        Animal animal   
- = new Dog(); // Reference to a Dog object
-        animal.sound(); // Output: Woof!
-    }
-}
+**Abstract Classes:**
+- Use when you want to provide a partial implementation and define common behavior for a group of subclasses.
+- Use when you need to share state and methods among subclasses.
 
+**Interfaces:**
+- Use when you want to define a contract for a group of classes without imposing a specific implementation.
+- Use to achieve multiple inheritance of types, enabling polymorphism and loose coupling.
 
--> WHat are the ways of re-usability in oops? 
-        Diff in composition - aggregation  - inheritance?
-Aggregation:- weak relation, independent of each other - library has books
-COmposition:- Strong relation, dependent of each other - house has rooms
+### 3. What is runtime polymorphism and dynamic method dispatch? What is the JVM's role in this?
 
--> which types of Inner Classes in Java exist?
+Example: class Animal:
+- Animal has a generic sound method, which a subclass like Dog can override with specific behavior. The JVM enables dynamic method dispatch, allowing the correct method to be called based on the runtime type of the object.
 
-Static Nested Classes: Declared within a class, accessible without an outer class instance.
-Inner Classes: Declared within a class, have access to outer class members, require an outer class instance.
-Local Classes: Declared within a method or block, access local variables of the enclosing block.
-Anonymous Classes: Declared and instantiated in a single step, often used for event listeners and one-off objects.
+### 4. What are the ways of reusability in OOP? Differences between composition, aggregation, and inheritance?
 
+- **Aggregation**: A weak relationship, where components can exist independently of each other. E.g., a library has books.
+- **Composition**: A strong relationship, where components depend on each other. E.g., a house has rooms.
 
--> Immutability? Stpes? Pros and cons?
-Immutability ensures that an object's state cannot be changed after its creation.
+### 5. What types of inner classes exist in Java?
 
-Creating Immutable Classes:
+- **Static Nested Classes**: Declared within a class, accessible without an outer class instance.
+- **Inner Classes**: Declared within a class, have access to outer class members, and require an outer class instance.
+- **Local Classes**: Declared within a method or block, accessing local variables of the enclosing block.
+- **Anonymous Classes**: Declared and instantiated in a single step, often used for event listeners and one-off objects.
 
--Declare all fields as final.
--Don't provide setter methods.
--Make the class final to prevent subclassing.
--If the class has mutable fields, make defensive copies of them in constructors and methods.
+### 6. What is immutability? Steps to make a class immutable, and its pros and cons?
 
-Benefits:
-Thread-safety: Immutable objects are inherently thread-safe.
-Simplicity: Easier to reason about and test.
-Security: Protects against accidental or malicious modification.
+Immutability ensures an object's state cannot be changed after its creation.
 
-Drawbacks:
-Object creation overhead: Creating new objects can be less efficient than modifying existing ones.
-Memory consumption: Can lead to increased memory usage due to object creation.
+**Creating Immutable Classes:**
+- Declare all fields as `final`.
+- Avoid setter methods.
+- Make the class `final` to prevent subclassing.
+- If the class has mutable fields, make defensive copies in constructors and methods.
 
-Scenario-Based Questions
-1. Scenario: Object Creation with Multiple Configurations
+**Benefits:**
+- **Thread-safety**: Immutable objects are inherently thread-safe.
+- **Simplicity**: Easier to reason about and test.
+- **Security**: Protects against accidental or malicious modification.
+
+**Drawbacks:**
+- **Object creation overhead**: Creating new objects can be less efficient than modifying existing ones.
+- **Memory consumption**: Can lead to increased memory usage due to object creation.
+
+# Scenario-Based Questions
+
+### 1. Scenario: Object Creation with Multiple Configurations
 Question: You need to create a complex object with multiple optional fields. The object should have only required fields initially, but some fields may be added later as needed. Modifying constructor parameters would make it unwieldy. Which design pattern would you use?
 Answer: Builder Pattern – It allows constructing complex objects step by step, especially when some fields are optional.
 
-2. Scenario: Integrating with an External Library
+### 2. Scenario: Integrating with an External Library
 Question: You are building a payment processing module that needs to integrate with multiple third-party payment gateways (e.g., Stripe, PayPal). Each gateway has a different API and data format. You want to create a unified interface within your application so that your code can interact with all gateways in the same way, without changing the core logic each time a new gateway is added. Which design pattern should you use?
 Answer: Adapter Pattern – The Adapter pattern can help wrap each third-party gateway’s API, allowing your code to interact with them through a common interface.
 
-3. Scenario: Choosing the Right Database Connection
+### 3. Scenario: Choosing the Right Database Connection
 
 Question: You’re building a data processing tool that supports multiple database types (e.g., MySQL, PostgreSQL, MongoDB). At runtime, the tool should connect to the correct database type based on the configuration provided, without needing to modify the main logic for each new database type added. Which design pattern would be ideal here?
 Answer: Factory Pattern – The Factory pattern allows you to create the correct database connection object dynamically based on the configuration, encapsulating the creation logic.
 
-4. Scenario: Centralized Control Over Shared Resource Access
+### 4. Scenario: Centralized Control Over Shared Resource Access
 Question: You’re designing a system where multiple services need to access a shared resource (e.g., database connection or configuration settings). You need to ensure that only one instance of this resource exists to prevent conflicts and optimize memory usage. Which design pattern would be suitable?
 Answer: Singleton Pattern – Ensures a single instance of a resource, especially for shared resources like database connections.
 
-5. Scenario: Decoupling Request Senders and Receivers
+### 5. Scenario: Decoupling Request Senders and Receivers
 Question: You have several classes that send requests and several classes that handle these requests. The senders shouldn’t need to know about the receivers, and receivers should be able to process requests based on a chain of rules or conditions. Which design pattern fits this scenario?
 Answer: Chain of Responsibility Pattern – It allows multiple receivers to handle requests in a chain, passing the request along if one receiver doesn’t process it.
 
-7. Scenario: Implementing Undo/Redo Functionality
+### 6. Scenario: Implementing Undo/Redo Functionality
 Question: You’re building a text editor with undo/redo functionality. Each user action (e.g., typing, deleting, formatting) should be saved so it can be undone or redone. Each action might have complex behavior and needs to be easily revertible. Which design pattern should you use?
 Answer: Command Pattern – Encapsulates actions as objects, allowing them to be queued, logged, and reversible, making it ideal for undo/redo operations.
 
-9. Scenario: Switching Behavior Based on Object State
+### 7. Scenario: Switching Behavior Based on Object State
 Question: You’re implementing a workflow where an object’s behavior should change based on its internal state. For example, an order could be in Pending, Shipped, or Delivered state, with different actions and behavior allowed for each state. Which design pattern is most appropriate?
 Answer: State Pattern – It allows an object to change its behavior dynamically as its state changes, useful for workflow-based applications.
 
