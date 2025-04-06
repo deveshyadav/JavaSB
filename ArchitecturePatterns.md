@@ -94,7 +94,7 @@ If crash occurs before offset is committed, on restart:
 ```java
 consumer.commitSync();  // Only commit after successful processing
 
-```java
+```
 
 
 
